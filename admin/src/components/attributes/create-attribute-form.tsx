@@ -13,10 +13,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "../ui/textarea";
+import { useCreateAttribute } from "@/services/attributes/create-attribute";
+import { useSearchParams } from "react-router";
 
 // Schema for validation
 const FormSchema = z.object({
-  jsonData: z.string().refine(
+  collectionSchema: z.string().refine(
     (value) => {
       try {
         JSON.parse(value);
@@ -39,8 +41,16 @@ export function CreateAttributeForm({ onSuccess }: CreateAttributeFormProps) {
     resolver: zodResolver(FormSchema),
   });
 
+
+  const {mutate} = useCreateAttribute();
+  const [searchParams] = useSearchParams();
+  const appName = searchParams.get("app") || ""; 
+
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(data);
+    mutate({
+        appName: appName,
+        collectionSchema: data.collectionSchema
+    });
     if (onSuccess) onSuccess(); // Close dialog after submission
   }
 
@@ -49,7 +59,7 @@ export function CreateAttributeForm({ onSuccess }: CreateAttributeFormProps) {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <FormField
           control={form.control}
-          name="jsonData"
+          name="collectionSchema"
           render={({ field }) => (
             <FormItem>
               <FormLabel>JSON Data</FormLabel>
