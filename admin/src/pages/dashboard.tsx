@@ -23,7 +23,7 @@ function DashboardPage() {
             </CardHeader>
             <CardContent>
               <Button>
-                <Link to={`/app/${app.id}`}>Go to app</Link>
+                <Link to={`/app/${app.id}/collection`}>Go to app</Link>
               </Button>
             </CardContent>
           </Card>

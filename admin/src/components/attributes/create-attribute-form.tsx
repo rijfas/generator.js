@@ -30,7 +30,7 @@ const FormSchema = z.object({
 });
 
 interface CreateAttributeFormProps {
-  onSuccess: () => void;
+  onSuccess?: () => void;
 }
 
 // Form Component
@@ -41,7 +41,7 @@ export function CreateAttributeForm({ onSuccess }: CreateAttributeFormProps) {
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     console.log(data);
-    onSuccess(); // Close dialog after submission
+    if (onSuccess) onSuccess(); // Close dialog after submission
   }
 
   return (

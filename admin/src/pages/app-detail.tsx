@@ -1,5 +1,5 @@
-import { CreateAttributeDialog } from "@/components/attributes/create-attribute-dialog";
+import { CreateAttributeForm } from "@/components/attributes/create-attribute-form";
 
 export default function AppDetailPage() {
-  return <CreateAttributeDialog />;
+  return <CreateAttributeForm />;
 }
