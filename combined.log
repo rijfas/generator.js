@@ -2,3 +2,12 @@
 {"level":"info","message":{"ip":"::ffff:127.0.0.1","method":"GET","originalUrl":"/favicon.ico"},"timestamp":"2025-02-22T08:47:34.258Z"}
 {"level":"info","message":{"ip":"::ffff:127.0.0.1","method":"GET","originalUrl":"/"},"timestamp":"2025-02-22T08:54:16.180Z"}
 {"level":"info","message":{"ip":"::ffff:127.0.0.1","method":"GET","originalUrl":"/favicon.ico"},"timestamp":"2025-02-22T08:54:16.218Z"}
+{"level":"info","message":{"ip":"::ffff:127.0.0.1","method":"GET","originalUrl":"/"},"timestamp":"2025-02-22T10:47:58.193Z"}
+{"level":"info","message":{"ip":"::ffff:127.0.0.1","method":"GET","originalUrl":"/"},"timestamp":"2025-02-22T10:55:19.245Z"}
+{"level":"info","message":{"ip":"::ffff:127.0.0.1","method":"GET","originalUrl":"/"},"timestamp":"2025-02-22T10:55:23.307Z"}
+{"level":"info","message":{"ip":"::ffff:127.0.0.1","method":"GET","originalUrl":"/api/products"},"timestamp":"2025-02-22T10:55:28.940Z"}
+{"level":"info","message":{"ip":"::ffff:127.0.0.1","method":"GET","originalUrl":"/api/product"},"timestamp":"2025-02-22T10:55:42.723Z"}
+{"level":"info","message":{"ip":"::ffff:127.0.0.1","method":"GET","originalUrl":"/api/product/products"},"timestamp":"2025-02-22T10:56:11.187Z"}
+{"level":"info","message":{"ip":"::ffff:127.0.0.1","method":"GET","originalUrl":"/api/product/products"},"timestamp":"2025-02-22T11:02:43.369Z"}
+{"level":"info","message":{"ip":"::ffff:127.0.0.1","method":"GET","originalUrl":"/api/products"},"timestamp":"2025-02-22T11:02:49.288Z"}
+{"level":"info","message":{"ip":"::ffff:127.0.0.1","method":"GET","originalUrl":"/api/products"},"timestamp":"2025-02-22T11:03:16.767Z"}

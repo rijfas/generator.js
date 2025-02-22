@@ -1,13 +1,13 @@
 // templates/router.ejs
 import express from 'express';
-import <%= camel %>controller from './<%= original %>.controller.js';
+import { read<%= pascal %>s, read<%= pascal %>, create<%= pascal %>, update<%= pascal %>, delete<%= pascal %> } from './<%= original %>.controller.js';
 
 const router = express.Router();
 
-router.get('/<%= pluralLower %>', <%= camel %>controller.list);
-router.get('/<%= pluralLower %>/:id', <%= camel %>controller.get);
-router.post('/<%= pluralLower %>', <%= camel %>controller.create);
-router.put('/<%= pluralLower %>/:id', <%= camel %>controller.update);
-router.delete('/<%= pluralLower %>/:id', <%= camel %>controller.remove);
+router.get('/', read<%= pascal %>s);
+router.get('/:id', read<%= pascal %>);
+router.post('/', create<%= pascal %>);
+router.put('/:id', update<%= pascal %>);
+router.delete('/:id', delete<%= pascal %>);
 
 export default router;

@@ -40,6 +40,27 @@ export const generateApp = ({appName, collectionSchema, targetDir = process.cwd(
     const fileName = `${appName}.${templateType}.js`;
     fs.writeFileSync(new URL(`${appName}/${fileName}`, appDir), content);
   });
+
+  // Update router.js with new route
+  const routerPath = new URL(`${targetDir}/../router.js`, import.meta.url);
+  let routerContent = fs.readFileSync(routerPath, 'utf8');
+
+  // Add import statement if not exists
+  const importStatement = `import ${vars.camel}Router from "./apps/${vars.original}/${vars.original}.router.js";`;
+  if (!routerContent.includes(importStatement)) {
+    const lastImportIndex = routerContent.lastIndexOf('import');
+    const endOfLastImport = routerContent.indexOf('\n', lastImportIndex) + 1;
+    routerContent = routerContent.slice(0, endOfLastImport) + importStatement + '\n' + routerContent.slice(endOfLastImport);
+  }
+
+  // Add route registration if not exists
+  const routeStatement = `router.use("/${vars.pluralLower}", ${vars.camel}Router);`;
+  if (!routerContent.includes(routeStatement)) {
+    const routerDeclarationIndex = routerContent.indexOf('const router = Router();') + 'const router = Router();'.length;
+    routerContent = routerContent.slice(0, routerDeclarationIndex) + '\n\n' + routeStatement + routerContent.slice(routerDeclarationIndex);
+  }
+
+  fs.writeFileSync(routerPath, routerContent);
 };
 
 generateApp({
@@ -74,5 +95,5 @@ generateApp({
       default: false,
   },
 },
-targetDir: "./tmp"
+targetDir: "../src/apps"
 });
