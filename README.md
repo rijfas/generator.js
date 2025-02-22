@@ -100,7 +100,7 @@ http://localhost:3000/api/{appName}/{collectionName}
 ## Project Structure
 
 ```
-express-api-generator/
+generator.js/
 ├── client/                 # React admin interface
 │   ├── src/
 │   │   ├── components/    # Reusable UI components
@@ -209,8 +209,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 For support and questions, please:
 - Open an issue on GitHub
-- Contact us at support@example.com
-- Join our Discord community
 
 ## Roadmap
 
@@ -220,4 +218,3 @@ For support and questions, please:
 - [ ] Database migration tools
 - [ ] Multiple database support
 - [ ] API testing interface
-- [ ] Custom template support
