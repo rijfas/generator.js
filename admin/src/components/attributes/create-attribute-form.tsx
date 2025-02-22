@@ -25,6 +25,13 @@ import {
 import { useState } from "react";
 import { Textarea } from "../ui/textarea";
 
+
+/*
+* currently accepts a json string for testing backend, we will need a form
+* fields for attribute field name, type and description (optional)
+* 
+*/
+
 const FormSchema = z.object({
   jsonData: z.string().refine(
     (value) => {
