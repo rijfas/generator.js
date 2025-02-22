@@ -4,10 +4,11 @@ import { dirname } from "path";
 import fs from "fs-extra";
 import ejs from "ejs";
 import { processAppName } from "./utils.js";
+import mongoose from "mongoose";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-export const generateApp = (appName, targetDir = process.cwd()) => {
+export const generateApp = ({appName, collectionSchema, targetDir = process.cwd()}) => {
   const vars = processAppName(appName);
   const appDir = new URL(`${targetDir}/${appName}`, import.meta.url);
 
@@ -16,12 +17,12 @@ export const generateApp = (appName, targetDir = process.cwd()) => {
 
   // Generate files from templates
   const templates = [
-    // "controller",
-    // "model",
+    "controller",
+    "model",
     "router",
-    // "service",
-    // "utils",
-    // "validator",
+    "service",
+    "utils",
+    "validator",
   ];
 
   templates.forEach((templateType) => {
@@ -29,10 +30,51 @@ export const generateApp = (appName, targetDir = process.cwd()) => {
       `./templates/${templateType}.ejs`,
       import.meta.url
     );
-    const content = ejs.render(fs.readFileSync(templatePath, "utf8"), vars);
+    const content = ejs.render(fs.readFileSync(templatePath, "utf8"), {
+      ...vars,
+      collectionSchema: JSON.stringify(collectionSchema, null, 2),
+      createBody: Object.keys(collectionSchema).join(", "),
+    });
     const fileName = `${appName}.${templateType}.js`;
     fs.writeFileSync(new URL(`${appName}/${fileName}`, appDir), content);
   });
 };
 
-generateApp("product", "./tmp");
+generateApp({
+  appName:"product", collectionSchema: {
+  name: {
+      type: String,
+  },
+  email: {
+      type: String,
+      required: true,
+      unique: true,
+  },
+  org: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "org",
+  },
+  password: {
+      type: String,
+      required:true,
+  },
+  fcmTokens: [String],
+  isAdmin: {
+      type: Boolean,
+      default: false,
+  },
+  isActive: {
+      type: Boolean,
+      default: false,
+  },
+  isBlocked: {
+      type: Boolean,
+      default: false,
+  },
+  isDeleted: {
+      type: Boolean,
+      default: false,
+  },
+},
+targetDir: "./tmp"
+});

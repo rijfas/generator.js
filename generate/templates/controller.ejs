@@ -1,18 +1,50 @@
-import { httpCodeUtils, responseUtils } from "../utils/response.utils.js";
-import { errorWrapper } from "../middleware/errorWrapper.middleware.js";
+import { StatusCodes } from "http-status-codes";
+import { successResponse } from "../../utils/response.util.js";
 
-const healthCheck = errorWrapper(
-  async (req, res) => {
-    return responseUtils(res, {
-      status: httpCodeUtils.OK,
-      success: true,
-      message: "Server is up and running",
-      data: {
-        message: "Server is up and running",
-        timestamp: new Date().toISOString(),
-      },
-    });
-  },
-);
+export const createUser = (req, res, next) => {
+  const { <%= createBody %> } = req.body;
+  return successResponse(res, {
+    statusCode: StatusCodes.OK,
+    metadata: {
+      timeStamp: new Date(),
+    },
+  });
+};
 
-export { healthCheck };
+
+export const readUsers = (req, res, next) => {
+  return successResponse(res, {
+    statusCode: StatusCodes.OK,
+    metadata: {
+      timeStamp: new Date(),
+    },
+  });
+};
+
+export const readUser = (req, res, next) => {
+  return successResponse(res, {
+    statusCode: StatusCodes.OK,
+    metadata: {
+      timeStamp: new Date(),
+    },
+  });
+};
+
+export const updateUser = (req, res, next) => {
+  return successResponse(res, {
+    statusCode: StatusCodes.OK,
+    metadata: {
+      timeStamp: new Date(),
+    },
+  });
+};
+
+export const deleteUser = (req, res, next) => {
+
+  return successResponse(res, {
+    statusCode: StatusCodes.OK,
+    metadata: {
+      timeStamp: new Date(),
+    },
+  });
+};
