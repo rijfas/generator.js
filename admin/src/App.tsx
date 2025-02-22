@@ -1,11 +1,11 @@
-import { Button } from "./components/ui/button";
+import { BrowserRouter } from "react-router";
+import AppRoutes from "./routes";
 
 function App() {
   return (
-    <div className="flex gap-x-10">
-      <Button>Sample button</Button>
-      <Button>Create</Button>
-    </div>
+    <BrowserRouter>
+      <AppRoutes />
+    </BrowserRouter>
   );
 }
 
