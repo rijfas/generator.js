@@ -7,6 +7,7 @@ const processAppName = (name) => {
   const pascal = pascalCase(name);
   return {
     original: name,
+    originalCapital: name.charAt(0).toUpperCase() + name.slice(1),
     pascal: pascal,
     camel: camelCase(name),
     plural: pluralize(pascal),
