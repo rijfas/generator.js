@@ -5,6 +5,7 @@ import productRouter from "./apps/product/product.router.js";
 
 const router = Router();
 
+
 router.use("/products", productRouter);
 
 

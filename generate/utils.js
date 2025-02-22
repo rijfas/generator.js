@@ -1,6 +1,7 @@
 import pluralize from "pluralize";
 import { pascalCase, camelCase } from "change-case";
 import mongoose from "mongoose";
+import fs from "fs";
 
 
 const processAppName = (name) => {
@@ -33,4 +34,28 @@ const serializeSchema = (schema) => {
     .replace(/"type": "mongoose.Schema.Types.ObjectId"/g, 'type: mongoose.Schema.Types.ObjectId');
 };
 
-export { processAppName, serializeSchema };
+
+const appendRouter = (vars, targetDir) => {
+// Update router.js with new route
+const routerPath = new URL(`${targetDir}/../router.js`, import.meta.url);
+let routerContent = fs.readFileSync(routerPath, 'utf8');
+
+// Add import statement if not exists
+const importStatement = `import ${vars.camel}Router from "./apps/${vars.original}/${vars.original}.router.js";`;
+if (!routerContent.includes(importStatement)) {
+  const lastImportIndex = routerContent.lastIndexOf('import');
+  const endOfLastImport = routerContent.indexOf('\n', lastImportIndex) + 1;
+  routerContent = routerContent.slice(0, endOfLastImport) + importStatement + '\n' + routerContent.slice(endOfLastImport);
+}
+
+// Add route registration if not exists
+const routeStatement = `router.use("/${vars.pluralLower}", ${vars.camel}Router);`;
+if (!routerContent.includes(routeStatement)) {
+  const routerDeclarationIndex = routerContent.indexOf('const router = Router();') + 'const router = Router();'.length;
+  routerContent = routerContent.slice(0, routerDeclarationIndex) + '\n\n' + routeStatement + routerContent.slice(routerDeclarationIndex);
+}
+
+fs.writeFileSync(routerPath, routerContent);
+}
+
+export { processAppName, serializeSchema, appendRouter };

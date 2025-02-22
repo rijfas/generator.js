@@ -1,13 +1,13 @@
 import { StatusCodes } from "http-status-codes";
 import { successResponse } from "../../utils/response.util.js";
-import <%= pascal %> from "./<%= original %>.model.js";
+import <%= appName.pascal %> from "./<%= appName.original %>.model.js";
 
-export const create<%= pascal %> = async(req, res, next) => {
+export const create<%= appName.pascal %> = async(req, res, next) => {
   const { <%= createBody %> } = req.body;
-  const data = await <%= pascal %>.create({ <%= createBody %> });
+  const data = await <%= appName.pascal %>.create({ <%= createBody %> });
   return successResponse(res, {
     statusCode: StatusCodes.CREATED,
-    message: "<%= originalCapital %> created successfully",
+    message: "<%= appName.originalCapital %> created successfully",
     metadata: {
       timeStamp: new Date(),
     },
@@ -15,11 +15,11 @@ export const create<%= pascal %> = async(req, res, next) => {
 };
 
 
-export const read<%= pascal %>s = async(req, res, next) => {
-  const data = await <%= pascal %>.find({});
+export const read<%= appName.pascal %>s = async(req, res, next) => {
+  const data = await <%= appName.pascal %>.find({});
   return successResponse(res, {
     statusCode: StatusCodes.OK,
-    message: "<%= originalCapital %>s fetched successfully",
+    message: "<%= appName.originalCapital %>s fetched successfully",
     data: data,
     metadata: {
       timeStamp: new Date(),
@@ -27,12 +27,12 @@ export const read<%= pascal %>s = async(req, res, next) => {
   });
 };
 
-export const read<%= pascal %> = async(req, res, next) => {
+export const read<%= appName.pascal %> = async(req, res, next) => {
   const { id } = req.params;
-  const data = await <%= pascal %>.findById(id);
+  const data = await <%= appName.pascal %>.findById(id);
   return successResponse(res, {
     statusCode: StatusCodes.OK,
-    message: "<%= originalCapital %> fetched successfully",
+    message: "<%= appName.originalCapital %> fetched successfully",
     data: data,
     metadata: {
       timeStamp: new Date(),
@@ -40,13 +40,13 @@ export const read<%= pascal %> = async(req, res, next) => {
   });
 };
 
-export const update<%= pascal %> = async(req, res, next) => {
+export const update<%= appName.pascal %> = async(req, res, next) => {
   const { id } = req.params;
   const { <%= updateBody %> } = req.body;
-  const data = await <%= pascal %>.findByIdAndUpdate(id, { <%= updateBody %> });
+  const data = await <%= appName.pascal %>.findByIdAndUpdate(id, { <%= updateBody %> });
   return successResponse(res, {
     statusCode: StatusCodes.OK,
-    message: "<%= originalCapital %> updated successfully",
+    message: "<%= appName.originalCapital %> updated successfully",
     data: data,
     metadata: {
       timeStamp: new Date(),
@@ -54,12 +54,12 @@ export const update<%= pascal %> = async(req, res, next) => {
   });
 };
 
-export const delete<%= pascal %> = async(req, res, next) => {
+export const delete<%= appName.pascal %> = async(req, res, next) => {
   const { id } = req.params;
-  const data = await <%= pascal %>.findByIdAndDelete(id);
+  const data = await <%= appName.pascal %>.findByIdAndDelete(id);
   return successResponse(res, {
     statusCode: StatusCodes.OK,
-    message: "<%= originalCapital %> deleted successfully",
+    message: "<%= appName.originalCapital %> deleted successfully",
     metadata: {
       timeStamp: new Date(),
     },
