@@ -1,0 +1,67 @@
+import { StatusCodes } from "http-status-codes";
+import { successResponse } from "../../utils/response.util.js";
+import <%= appName.pascal %> from "./<%= appName.original %>.model.js";
+
+export const create<%= appName.pascal %> = async(req, res, next) => {
+  const { <%= createBody %> } = req.body;
+  const data = await <%= appName.pascal %>.create({ <%= createBody %> });
+  return successResponse(res, {
+    statusCode: StatusCodes.CREATED,
+    message: "<%= appName.originalCapital %> created successfully",
+    metadata: {
+      timeStamp: new Date(),
+    },
+  });
+};
+
+
+export const read<%= appName.pascal %>s = async(req, res, next) => {
+  const data = await <%= appName.pascal %>.find({});
+  return successResponse(res, {
+    statusCode: StatusCodes.OK,
+    message: "<%= appName.originalCapital %>s fetched successfully",
+    data: data,
+    metadata: {
+      timeStamp: new Date(),
+    },
+  });
+};
+
+export const read<%= appName.pascal %> = async(req, res, next) => {
+  const { id } = req.params;
+  const data = await <%= appName.pascal %>.findById(id);
+  return successResponse(res, {
+    statusCode: StatusCodes.OK,
+    message: "<%= appName.originalCapital %> fetched successfully",
+    data: data,
+    metadata: {
+      timeStamp: new Date(),
+    },
+  });
+};
+
+export const update<%= appName.pascal %> = async(req, res, next) => {
+  const { id } = req.params;
+  const { <%= updateBody %> } = req.body;
+  const data = await <%= appName.pascal %>.findByIdAndUpdate(id, { <%= updateBody %> });
+  return successResponse(res, {
+    statusCode: StatusCodes.OK,
+    message: "<%= appName.originalCapital %> updated successfully",
+    data: data,
+    metadata: {
+      timeStamp: new Date(),
+    },
+  });
+};
+
+export const delete<%= appName.pascal %> = async(req, res, next) => {
+  const { id } = req.params;
+  const data = await <%= appName.pascal %>.findByIdAndDelete(id);
+  return successResponse(res, {
+    statusCode: StatusCodes.OK,
+    message: "<%= appName.originalCapital %> deleted successfully",
+    metadata: {
+      timeStamp: new Date(),
+    },
+  });
+};
