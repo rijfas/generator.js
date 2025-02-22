@@ -1,50 +1,107 @@
-# React + TypeScript + Vite
+# Admin Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A powerful web-based admin interface for generating Express.js APIs. This tool allows you to create and manage APIs through an intuitive UI without writing boilerplate code.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- ⚡ **Vite** - Fast build and development
+- ⚛ **React 19** - Latest version of React
+- 🎨 **Tailwind CSS** - Utility-first styling
+- 🛠 **TypeScript** - Strongly typed JavaScript
+- 🚀 **ESLint** - Code linting for best practices
+- 🔄 **Hot Reloading** - Instant updates during development
 
-## Expanding the ESLint configuration
+## Installation
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+Clone the repository:
 
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```sh
+git clone https://github.com/yourusername/admin-dashboard.git
+cd admin-dashboard
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+Install dependencies:
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+```sh
+npm install
 ```
+
+## Development
+
+Start the development server:
+
+```sh
+npm run dev
+```
+
+This will launch the Vite development server.
+
+## Build
+
+To create a production build:
+
+```sh
+npm run build
+```
+
+The optimized output will be in the `dist/` directory.
+
+## Preview Production Build
+
+To preview the production build:
+
+```sh
+npm run preview
+```
+
+## Linting
+
+Ensure code quality with ESLint:
+
+```sh
+npm run lint
+```
+
+## Technologies Used
+
+- [Vite](https://vitejs.dev/) - Build tool
+- [React 19](https://react.dev/) - UI library
+- [Tailwind CSS](https://tailwindcss.com/) - Styling framework
+- [TypeScript](https://www.typescriptlang.org/) - Type-safe JavaScript
+- [ESLint](https://eslint.org/) - Code linting
+
+## Folder Structure
+
+```
+admin-dashboard/
+├── frontend/            # Frontend application
+│   ├── src/            # Source code
+│   │   ├── components/ # Reusable components
+│   │   ├── pages/      # Page components
+│   │   ├── styles/     # Tailwind CSS styles
+│   │   └── main.tsx    # Entry point
+│   ├── public/         # Static assets
+│   ├── package.json    # Project dependencies
+│   ├── tailwind.config.js  # Tailwind configuration
+│   ├── tsconfig.json   # TypeScript configuration
+│   ├── README.md       # Frontend-specific documentation
+├── backend/            # Backend application (Express.js API)
+├── README.md           # Project documentation
+```
+
+## Frontend README
+
+A separate README file is included in the `frontend/` folder with frontend-specific details.
+
+## License
+
+This project is licensed under the MIT License.
+
+## Contributing
+
+Contributions are welcome! Feel free to fork the repo and submit a pull request.
+
+## Contact
+
+For questions or support, open an issue on GitHub.
+
