@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "A powerful web-based admin interface for generating Express.js APIs. This tool allows you to create and manage APIs through an intuitive UI without writing boilerplate code.",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -15,5 +16,11 @@
   "bugs": {
     "url": "https://github.com/amjadcp/generator.js/issues"
   },
-  "homepage": "https://github.com/amjadcp/generator.js#readme"
+  "homepage": "https://github.com/amjadcp/generator.js#readme",
+  "dependencies": {
+    "change-case": "^5.4.4",
+    "ejs": "^3.1.10",
+    "fs-extra": "^11.3.0",
+    "pluralize": "^8.0.0"
+  }
 }
