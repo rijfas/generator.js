@@ -35,6 +35,7 @@ export const generateApp = ({appName, collectionSchema, targetDir = process.cwd(
       ...vars,
       collectionSchema: serializeSchema(collectionSchema),
       createBody: Object.keys(collectionSchema).join(", "),
+      updateBody: Object.keys(collectionSchema).join(", "),
     });
     const fileName = `${appName}.${templateType}.js`;
     fs.writeFileSync(new URL(`${appName}/${fileName}`, appDir), content);

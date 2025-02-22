@@ -1,8 +1,21 @@
 import { StatusCodes } from "http-status-codes";
 import { successResponse } from "../../utils/response.util.js";
+import <%= pascal %> from "./<%= original %>.model.js";
 
-export const createUser = (req, res, next) => {
+export const createUser = async(req, res, next) => {
   const { <%= createBody %> } = req.body;
+  const data = await <%= pascal %>.create({ <%= createBody %> });
+  return successResponse(res, {
+    statusCode: StatusCodes.CREATED,
+    metadata: {
+      timeStamp: new Date(),
+    },
+  });
+};
+
+
+export const readUsers = async(req, res, next) => {
+  const data = await <%= pascal %>.find({});
   return successResponse(res, {
     statusCode: StatusCodes.OK,
     metadata: {
@@ -11,8 +24,9 @@ export const createUser = (req, res, next) => {
   });
 };
 
-
-export const readUsers = (req, res, next) => {
+export const readUser = async(req, res, next) => {
+  const { id } = req.params;
+  const data = await <%= pascal %>.findById(id);
   return successResponse(res, {
     statusCode: StatusCodes.OK,
     metadata: {
@@ -21,7 +35,10 @@ export const readUsers = (req, res, next) => {
   });
 };
 
-export const readUser = (req, res, next) => {
+export const updateUser = async(req, res, next) => {
+  const { id } = req.params;
+  const { <%= updateBody %> } = req.body;
+  const data = await <%= pascal %>.findByIdAndUpdate(id, { <%= updateBody %> });
   return successResponse(res, {
     statusCode: StatusCodes.OK,
     metadata: {
@@ -30,17 +47,9 @@ export const readUser = (req, res, next) => {
   });
 };
 
-export const updateUser = (req, res, next) => {
-  return successResponse(res, {
-    statusCode: StatusCodes.OK,
-    metadata: {
-      timeStamp: new Date(),
-    },
-  });
-};
-
-export const deleteUser = (req, res, next) => {
-
+export const deleteUser = async(req, res, next) => {
+  const { id } = req.params;
+  const data = await <%= pascal %>.findByIdAndDelete(id);
   return successResponse(res, {
     statusCode: StatusCodes.OK,
     metadata: {
