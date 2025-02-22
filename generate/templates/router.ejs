@@ -1,13 +1,13 @@
 // templates/router.ejs
 import express from 'express';
-import <%= camel %>Controller from './<%= original %>.controller.js';
+import <%= camel %>controller from './<%= original %>.controller.js';
 
 const router = express.Router();
 
-router.get('/api/<%= pluralLower %>', <%= camel %>Controller.list);
-router.get('/api/<%= pluralLower %>/:id', <%= camel %>Controller.get);
-router.post('/api/<%= pluralLower %>', <%= camel %>Controller.create);
-router.put('/api/<%= pluralLower %>/:id', <%= camel %>Controller.update);
-router.delete('/api/<%= pluralLower %>/:id', <%= camel %>Controller.remove);
+router.get('/<%= pluralLower %>', <%= camel %>controller.list);
+router.get('/<%= pluralLower %>/:id', <%= camel %>controller.get);
+router.post('/<%= pluralLower %>', <%= camel %>controller.create);
+router.put('/<%= pluralLower %>/:id', <%= camel %>controller.update);
+router.delete('/<%= pluralLower %>/:id', <%= camel %>controller.remove);
 
 export default router;
