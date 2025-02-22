@@ -10,7 +10,7 @@ import log from "./middlewares/log.middleware.js";
 import envConfig from "./configs/env.config.js";
 import { connectDB } from "./utils/db.util.js";
 
-// connectDB(envConfig.mongoUri);
+connectDB(envConfig.mongoUri);
 
 const app = express();
 
