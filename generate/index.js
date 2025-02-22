@@ -46,37 +46,37 @@ export const generateApp = ({appName, collectionSchema, targetDir = process.cwd(
   
 };
 
-generateApp({
-  appName:"User", collectionSchema: {
-  name: {
-      type: String,
-  },
-  email: {
-      type: String,
-      required: true,
-      unique: true,
-  },
+// generateApp({
+//   appName:"User", collectionSchema: {
+//   name: {
+//       type: String,
+//   },
+//   email: {
+//       type: String,
+//       required: true,
+//       unique: true,
+//   },
  
-  password: {
-      type: String,
-      required:true,
-  },
-  isAdmin: {
-      type: Boolean,
-      default: false,
-  },
-  isActive: {
-      type: Boolean,
-      default: false,
-  },
-  isBlocked: {
-      type: Boolean,
-      default: false,
-  },
-  isDeleted: {
-      type: Boolean,
-      default: false,
-  },
-},
-targetDir: "../src/apps"
-});
+//   password: {
+//       type: String,
+//       required:true,
+//   },
+//   isAdmin: {
+//       type: Boolean,
+//       default: false,
+//   },
+//   isActive: {
+//       type: Boolean,
+//       default: false,
+//   },
+//   isBlocked: {
+//       type: Boolean,
+//       default: false,
+//   },
+//   isDeleted: {
+//       type: Boolean,
+//       default: false,
+//   },
+// },
+// targetDir: "../src/apps"
+// });
