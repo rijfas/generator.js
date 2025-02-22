@@ -3,10 +3,11 @@ import { fileURLToPath } from "url";
 import { dirname } from "path";
 import fs from "fs-extra";
 import ejs from "ejs";
-import { processAppName } from "./utils.js";
-import mongoose from "mongoose";
+import { processAppName, serializeSchema } from "./utils.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
+
+
 
 export const generateApp = ({appName, collectionSchema, targetDir = process.cwd()}) => {
   const vars = processAppName(appName);
@@ -32,7 +33,7 @@ export const generateApp = ({appName, collectionSchema, targetDir = process.cwd(
     );
     const content = ejs.render(fs.readFileSync(templatePath, "utf8"), {
       ...vars,
-      collectionSchema: JSON.stringify(collectionSchema, null, 2),
+      collectionSchema: serializeSchema(collectionSchema),
       createBody: Object.keys(collectionSchema).join(", "),
     });
     const fileName = `${appName}.${templateType}.js`;
@@ -50,15 +51,11 @@ generateApp({
       required: true,
       unique: true,
   },
-  org: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "org",
-  },
+ 
   password: {
       type: String,
       required:true,
   },
-  fcmTokens: [String],
   isAdmin: {
       type: Boolean,
       default: false,
