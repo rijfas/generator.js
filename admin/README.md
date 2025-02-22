@@ -72,22 +72,7 @@ npm run lint
 
 ## Folder Structure
 
-```
-admin-dashboard/
-├── frontend/            # Frontend application
-│   ├── src/            # Source code
-│   │   ├── components/ # Reusable components
-│   │   ├── pages/      # Page components
-│   │   ├── styles/     # Tailwind CSS styles
-│   │   └── main.tsx    # Entry point
-│   ├── public/         # Static assets
-│   ├── package.json    # Project dependencies
-│   ├── tailwind.config.js  # Tailwind configuration
-│   ├── tsconfig.json   # TypeScript configuration
-│   ├── README.md       # Frontend-specific documentation
-├── backend/            # Backend application (Express.js API)
-├── README.md           # Project documentation
-```
+
 
 ## Frontend README
 
