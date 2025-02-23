@@ -11,12 +11,20 @@ import {
   createSchema,
   getAllSchemas,
 } from "./controllers/schemas.controller.js";
+import express from "express"
 
 class AdminApi {
   constructor(app) {
     this.app = app;
   }
   register() {
+
+    this.app.use(express.static(`${process.cwd()}/admin/frontend/dist`))
+    this.app.route('*').get((req, res) => {
+      res.sendFile(`${process.cwd()}/admin/frontend/dist/index.html`);
+    });
+    
+
     this.app.route("/api/admin/apps/").get(getAllApps).post(createApp);
 
     this.app
