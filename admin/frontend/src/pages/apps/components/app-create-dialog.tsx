@@ -20,6 +20,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useCreateApp } from "@/services/apps/create-app";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useQueryClient } from "@tanstack/react-query";
 import { Plus } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -38,22 +39,8 @@ const formSchema = z.object({
 
 type FormData = z.infer<typeof formSchema>;
 
-export default function AppCreateDialog({
-  apps,
-  setApps,
-}: {
-  apps: {
-    name: string;
-    // description: string;
-  }[];
-  setApps: React.Dispatch<
-    React.SetStateAction<
-      {
-        name: string;
-      }[]
-    >
-  >;
-}) {
+export default function AppCreateDialog() {
+  const client = useQueryClient();
   const [open, setOpen] = useState(false);
   const { mutate } = useCreateApp();
 
@@ -64,23 +51,25 @@ export default function AppCreateDialog({
     },
   });
 
-  const onSubmit = (data: FormData) => {
-    // const newId = Math.max(...apps.map((app) => app.id)) + 1;
-    setApps([...apps, { name: data.appName }]);
+  const onSubmit = async (data: FormData) => {
     setOpen(false);
     form.reset();
-    mutate(data);
+    mutate(data, {
+      onSuccess: async () => {
+        await client.invalidateQueries({ queryKey: ["apps"] });
+      },
+    });
   };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Card className="cursor-pointer hover:shadow-lg transition-shadow min-h-[140px] flex flex-col items-center justify-center">
+        <Card className='cursor-pointer hover:shadow-lg transition-shadow min-h-[140px] flex flex-col items-center justify-center'>
           <CardHeader>
-            <Plus className="w-8 h-8 text-gray-400" />
+            <Plus className='w-8 h-8 text-gray-400' />
           </CardHeader>
           <CardContent>
-            <p className="text-gray-500">Create New App</p>
+            <p className='text-gray-500'>Create New App</p>
           </CardContent>
         </Card>
       </DialogTrigger>
@@ -94,15 +83,15 @@ export default function AppCreateDialog({
         </DialogHeader>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
             <FormField
               control={form.control}
-              name="appName"
+              name='appName'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>App Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="MyApp" {...field} />
+                    <Input placeholder='MyApp' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -110,7 +99,7 @@ export default function AppCreateDialog({
             />
 
             <DialogFooter>
-              <Button type="submit">Create App</Button>
+              <Button type='submit'>Create App</Button>
             </DialogFooter>
           </form>
         </Form>

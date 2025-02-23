@@ -11,9 +11,9 @@ class GeneratorEngine {
     if (GeneratorEngine.instance) {
       return GeneratorEngine.instance;
     }
-    this.projectRoot = path.resolve(process.cwd(), "../");
+    this.projectRoot = path.resolve(process.cwd());
     this.appsDirectory = path.join(this.projectRoot, "src", "apps");
-    this.templatesDirectory = `${process.cwd()}/engine/templates`;
+    this.templatesDirectory = `${process.cwd()}/admin/engine/templates`;
     GeneratorEngine.instance = this;
   }
 
@@ -47,6 +47,8 @@ class GeneratorEngine {
   async getApps() {
     try {
       const apps = await fs.readdir(this.appsDirectory);
+      console.log(this.appsDirectory);
+
       return apps.filter((app) => {
         return fs
           .stat(path.join(this.appsDirectory, app))
@@ -173,7 +175,7 @@ class GeneratorEngine {
           ...routes.map((route) => {
             const [, method, path] =
               route.match(/router\.(get|post|put|delete)\(['"](.*?)['"]/) || [];
-            return { method: method.toUpperCase(), path: path };
+            return { method: method.toUpperCase(), path: `/${appName}${path}` };
           })
         );
       }
@@ -182,6 +184,43 @@ class GeneratorEngine {
       throw new Error(
         `Failed to get endpoints for ${appName}: ${error.message}`
       );
+    }
+  }
+
+  async getSchemas(appName) {
+    const appPath = path.join(this.appsDirectory, appName);
+    try {
+      const files = await fs.readdir(appPath);
+      const schemaFiles = files.filter((file) => file.endsWith(".model.js"));
+
+      const schemas = [];
+      for (const schemaFile of schemaFiles) {
+        const schemaContent = await fs.readFile(
+          path.join(appPath, schemaFile),
+          "utf-8"
+        );
+        const schemaModule = await import(
+          `file://${path.join(appPath, schemaFile)}`
+        );
+        const schema = schemaModule.default.schema.obj;
+        schemas.push({
+          name: schemaFile.replace(".model.js", ""),
+          schema,
+        });
+      }
+      return schemas;
+    } catch (error) {
+      throw new Error(`Failed to get schemas for ${appName}: ${error.message}`);
+    }
+  }
+
+  async deleteApp(appName) {
+    const appPath = path.join(this.appsDirectory, appName);
+    try {
+      await fs.rm(appPath, { recursive: true, force: true });
+      return true;
+    } catch (error) {
+      throw new Error(`Failed to delete app ${appName}: ${error.message}`);
     }
   }
 }

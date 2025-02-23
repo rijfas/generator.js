@@ -1,29 +1,13 @@
-import { dirname } from "path";
-import { fileURLToPath } from "url";
-import { getApps } from "../utils/file-scanner.util.js";
-import { generateApp } from "../utils/generate/index.js";
+import GeneratorEngine from "../../engine/index.js";
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
+const engine = GeneratorEngine.getInstance();
 
-export const getAllApps = (req, res) => {
-  const apps = getApps(`${process.cwd()}/src/apps`).map((e, i) => {
-    return { id: i, app: e };
-  });
+export const getAllApps = async (req, res) => {
+  const apps = await engine.getApps();
   res.json({ apps });
 };
 
-export const getAppById = (req, res) => {
-  const { id } = req.params;
-  const apps = getApps();
-
-  if (!apps.includes(id)) {
-    return res.status(404).json({ error: "App not found" });
-  }
-
-  res.json({ app: id });
-};
-
-export const createApp = (req, res) => {
+export const createApp = async (req, res) => {
   try {
     if (!req.body || !req.body.appName) {
       return res
@@ -31,10 +15,7 @@ export const createApp = (req, res) => {
         .json({ error: "appName is required in request body" });
     }
 
-    const result = generateApp({
-      appName: req.body.appName,
-      targetDir: `${process.cwd()}/src/apps`,
-    });
+    const result = await engine.createApp(req.body.appName);
 
     if (result) {
       res.status(201).json({ message: "App created successfully" });
@@ -46,16 +27,4 @@ export const createApp = (req, res) => {
 
     res.status(500).json({ error: error.message });
   }
-};
-
-export const updateApp = (req, res) => {
-  const { id } = req.params;
-  // Implementation for updating app
-  res.json({ message: "App updated" });
-};
-
-export const deleteApp = (req, res) => {
-  const { id } = req.params;
-  // Implementation for deleting app
-  res.json({ message: "App deleted" });
 };

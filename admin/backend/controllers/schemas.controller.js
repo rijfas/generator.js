@@ -1,28 +1,14 @@
-import path from "path";
-import { getSchemas } from "../utils/file-scanner.util.js";
-import { addModel } from "../utils/generate/index.js";
+import GeneratorEngine from "../../engine/index.js";
 
-export const getAllSchemas = (req, res) => {
-  const { id } = req.params;
-  const appPath = path.join("../src/apps", id);
-  const schemas = getSchemas(appPath);
+const engine = GeneratorEngine.getInstance();
+
+export const getAllSchemas = async (req, res) => {
+  const { appName } = req.params;
+  const schemas = await engine.getSchemas(appName);
   res.json({ schemas });
 };
 
-export const getSchemaById = (req, res) => {
-  const { id, schema_id } = req.params;
-  const appPath = path.join("../src/apps", id);
-  const schemas = getSchemas(appPath);
-  const schema = schemas.find((s) => s.name === schema_id);
-
-  if (!schema) {
-    return res.status(404).json({ error: "Schema not found" });
-  }
-
-  res.json({ schema });
-};
-
-export const createSchema = (req, res) => {
+export const createSchema = async (req, res) => {
   const { modelName, collectionSchema } = req.body;
 
   if (!modelName || !collectionSchema) {
@@ -31,32 +17,15 @@ export const createSchema = (req, res) => {
       .json({ error: "Model name and collection schema are required" });
   }
 
-  const appPath = path.join("../src/apps", req.params.id);
-  const schemas = getSchemas(appPath);
+  const appName = req.params.appName;
+  const schemas = await engine.getSchemas(appName);
   const schemaExists = schemas.some((s) => s.name === modelName);
 
   if (schemaExists) {
     return res.status(400).json({ error: "Schema already exists" });
   }
 
-  addModel({
-    appName: req.params.id,
-    modelName: req.body.modelName,
-    collectionSchema: req.body.collectionSchema,
-    targetDir: `${process.cwd()}/src/apps`,
-  });
+  await engine.addSchema(appName, modelName, collectionSchema);
 
   res.status(201).json({ message: "Schema created" });
-};
-
-export const updateSchema = (req, res) => {
-  const { id, schema_id } = req.params;
-  // Implementation for updating schema
-  res.json({ message: "Schema updated" });
-};
-
-export const deleteSchema = (req, res) => {
-  const { id, schema_id } = req.params;
-  // Implementation for deleting schema
-  res.json({ message: "Schema deleted" });
 };
