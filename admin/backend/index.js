@@ -1,4 +1,10 @@
-import { login } from "./auth.controller.js";
+import { login } from "./controllers/auth.controller.js";
+import { 
+  getAllApps, getAppById, createApp, updateApp, deleteApp 
+} from "./controllers/apps.controller.js";
+import {
+  getAllSchemas, getSchemaById, createSchema, updateSchema, deleteSchema
+} from "./controllers/schemas.controller.js";
 
 class AdminApi {
   constructor(app) {
@@ -10,25 +16,25 @@ class AdminApi {
 
     this.app
       .route("/api/admin/apps/")
-      .get(/* Get all apps */)
-      .post(/* Create app */);
+      .get(getAllApps)
+      .post(createApp);
 
     this.app
       .route("/api/admin/apps/:id")
-      .get(/* Get app by id */)
-      .put(/* Update app by id */)
-      .delete(/* Delete app by id */);
+      .get(getAppById)
+      .put(updateApp)
+      .delete(deleteApp);
 
     this.app
       .route("/api/admin/apps/:id/schemas")
-      .get(/* Get all schemas */)
-      .post(/* Create schema */);
+      .get(getAllSchemas)
+      .post(createSchema);
 
     this.app
       .route("/api/admin/apps/:id/schemas/:schema_id")
-      .get(/* Get schema */)
-      .put(/* Update schema */)
-      .delete(/* Delete schema */);
+      .get(getSchemaById)
+      .put(updateSchema)
+      .delete(deleteSchema);
 
     this.app
       .route("/api/admin/apps/:id/endpoints")

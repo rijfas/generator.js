@@ -9,14 +9,12 @@ import _404 from "./middlewares/404.middleware.js";
 import log from "./middlewares/log.middleware.js";
 import envConfig from "./configs/env.config.js";
 import { connectDB } from "./utils/db.util.js";
-import AdminApi from "../admin/apis/index.js";
+import AdminApi from "../admin/backend/index.js";
 
-connectDB(envConfig.mongoUri);
+// connectDB(envConfig.mongoUri);
 
 const app = express();
 
-const adminApi = new AdminApi(app);
-adminApi.register();
 
 app.set("trust proxy", 1);
 app.use(cors(corsConfig));
@@ -30,6 +28,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(helmet());
 app.use(morgan("tiny"));
 app.use(log);
+
+const adminApi = new AdminApi(app);
+adminApi.register();
 
 app.use("/api", router);
 app.use(_404);
