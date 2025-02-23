@@ -185,7 +185,7 @@ export function SchemaListing({ initialSchemas = [] }: SchemaListingProps) {
       </div>
     </div>
   );
-}
+} 
 
 // const sampleSchemas: Schema[] = [
 //   {
