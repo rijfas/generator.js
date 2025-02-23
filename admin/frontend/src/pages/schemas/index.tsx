@@ -173,14 +173,12 @@ export function SchemaListing({ initialSchemas = [] }: SchemaListingProps) {
           <Card className='py-12'>
             <CardContent className='flex flex-col items-center justify-center text-center'>
               <div className='text-gray-500 mb-4'>No schemas defined yet</div>
-              <DialogTrigger asChild>
-                <Button
-                  variant='outline'
-                  onClick={() => setCreateDialogOpen(true)}
-                >
-                  Create your first schema
-                </Button>
-              </DialogTrigger>
+              <Button
+                variant='outline'
+                onClick={() => setCreateDialogOpen(true)}
+              >
+                Create your first schema
+              </Button>
             </CardContent>
           </Card>
         )}
@@ -189,35 +187,35 @@ export function SchemaListing({ initialSchemas = [] }: SchemaListingProps) {
   );
 }
 
-const sampleSchemas: Schema[] = [
-  {
-    name: "User Schema",
-    description: "Defines the structure of a user object",
-    properties: {
-      id: { type: "string" },
-      name: { type: "string" },
-      email: { type: "string" },
-      age: { type: "number" },
-      isActive: { type: "boolean" },
-      preferences: { type: "object" },
-    },
-    required: ["id", "name", "email"],
-  },
-  {
-    name: "Product Schema",
-    description: "Defines the structure of a product object",
-    properties: {
-      id: { type: "string" },
-      name: { type: "string" },
-      price: { type: "number" },
-      category: { type: "string" },
-      inStock: { type: "boolean" },
-      tags: { type: "array" },
-    },
-    required: ["id", "name", "price"],
-  },
-];
+// const sampleSchemas: Schema[] = [
+//   {
+//     name: "User Schema",
+//     description: "Defines the structure of a user object",
+//     properties: {
+//       id: { type: "string" },
+//       name: { type: "string" },
+//       email: { type: "string" },
+//       age: { type: "number" },
+//       isActive: { type: "boolean" },
+//       preferences: { type: "object" },
+//     },
+//     required: ["id", "name", "email"],
+//   },
+//   {
+//     name: "Product Schema",
+//     description: "Defines the structure of a product object",
+//     properties: {
+//       id: { type: "string" },
+//       name: { type: "string" },
+//       price: { type: "number" },
+//       category: { type: "string" },
+//       inStock: { type: "boolean" },
+//       tags: { type: "array" },
+//     },
+//     required: ["id", "name", "price"],
+//   },
+// ];
 
 export default function SchemaListingPage() {
-  return <SchemaListing initialSchemas={sampleSchemas} />;
+  return <SchemaListing />;
 }
