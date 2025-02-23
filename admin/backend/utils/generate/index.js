@@ -53,7 +53,7 @@ export const addModel = ({
       updateBody: Object.keys(collectionSchema).join(", "),
     }
   );
-  const controllerFileName = `${modelName.pascal}.controller.js`;
+  const controllerFileName = `${modelName.original}.controller.js`;
   fs.writeFileSync(
     new URL(`${appName.original}/${controllerFileName}`, appDir),
     controllerContent
@@ -67,11 +67,11 @@ export const addModel = ({
       modelName,
     }
   );
-  const routerFileName = `${modelName.pascal}.router.js`;
+  const routerFileName = `${modelName.original}.router.js`;
   fs.writeFileSync(
     new URL(`${appName.original}/${routerFileName}`, appDir),
     routerContent
   );
 
-  appendRouter(appName, targetDir);
+  appendRouter(appName, modelName, targetDir);
 };

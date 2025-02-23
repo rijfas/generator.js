@@ -1,6 +1,6 @@
 import { StatusCodes } from "http-status-codes";
 import { successResponse } from "../../utils/response.util.js";
-import <%= modelName.pascal %> from "./<%= modelName.original %>.model.js";
+import <%= modelName.pascal %> from "./<%= modelName.pascal %>.model.js";
 
 export const create<%= modelName.pascal %> = async(req, res, next) => {
   const { <%= createBody %> } = req.body;

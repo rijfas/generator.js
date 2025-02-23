@@ -46,13 +46,13 @@ const serializeSchema = (schema) => {
     );
 };
 
-const appendRouter = (vars, targetDir) => {
+const appendRouter = (appName, modelName, targetDir) => {
   // Update router.js with new route
   const routerPath = new URL(`${targetDir}/../router.js`, import.meta.url);
   let routerContent = fs.readFileSync(routerPath, "utf8");
 
   // Add import statement if not exists
-  const importStatement = `import ${vars.camel}Router from "./apps/${vars.original}/${vars.original}.router.js";`;
+  const importStatement = `import ${modelName.camel}Router from "./apps/${appName.original}/${modelName.original}.router.js";`;
   if (!routerContent.includes(importStatement)) {
     const lastImportIndex = routerContent.lastIndexOf("import");
     const endOfLastImport = routerContent.indexOf("\n", lastImportIndex) + 1;
@@ -64,7 +64,7 @@ const appendRouter = (vars, targetDir) => {
   }
 
   // Add route registration if not exists
-  const routeStatement = `router.use("/${vars.pluralLower}", ${vars.camel}Router);`;
+  const routeStatement = `router.use("/${modelName.pluralLower}", ${modelName.camel}Router);`;
   if (!routerContent.includes(routeStatement)) {
     const routerDeclarationIndex =
       routerContent.indexOf("const router = Router();") +
