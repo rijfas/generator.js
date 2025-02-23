@@ -25,6 +25,8 @@ export const generateApp = ({appName, collectionSchema, targetDir = process.cwd(
     "utils",
     "validator",
   ];
+  console.log(JSON.stringify(collectionSchema));
+
 
   templates.forEach((templateType) => {
     const templatePath = new URL(
@@ -34,49 +36,61 @@ export const generateApp = ({appName, collectionSchema, targetDir = process.cwd(
     const content = ejs.render(fs.readFileSync(templatePath, "utf8"), {
       appName: appName,
       collectionSchema: serializeSchema(collectionSchema),
-      createBody: Object.keys(collectionSchema).join(", "),
-      updateBody: Object.keys(collectionSchema).join(", "),
+      createBody: JSON.stringify(collectionSchema),
+      updateBody: JSON.stringify(collectionSchema),
     });
     const fileName = `${appName.original}.${templateType}.js`;
     fs.writeFileSync(new URL(`${appName.original}/${fileName}`, appDir), content);
   });
 
   appendRouter(appName, targetDir);
-
   
 };
 
-// generateApp({
-//   appName:"User", collectionSchema: {
-//   name: {
-//       type: String,
-//   },
-//   email: {
-//       type: String,
-//       required: true,
-//       unique: true,
-//   },
+const typeEnum = {
+  String: "string",
+  Number: "number",
+  Boolean: "boolean",
+  Array: "array",
+  Object: "object",
+  ObjectId: "objectId",
+  Date: "date",
+  Url: "url",
+  Email: "email",
+};
+
+
+generateApp({
+  appName:"Test", collectionSchema: {
+  name: {
+      type: 'String',
+  },
+  email: {
+      type: 'String',
+      required: true,
+      unique: true,
+  },
  
-//   password: {
-//       type: String,
-//       required:true,
-//   },
-//   isAdmin: {
-//       type: Boolean,
-//       default: false,
-//   },
-//   isActive: {
-//       type: Boolean,
-//       default: false,
-//   },
-//   isBlocked: {
-//       type: Boolean,
-//       default: false,
-//   },
-//   isDeleted: {
-//       type: Boolean,
-//       default: false,
-//   },
-// },
-// targetDir: "../src/apps"
-// });
+  // password: {
+  //     type: String,
+  //     required:true,
+  // },
+  // isAdmin: {
+  //     type: Boolean,
+  //     default: false,
+  // },
+  // isActive: {
+  //     type: Boolean,
+  //     default: false,
+  // },
+  // isBlocked: {
+  //     type: Boolean,
+  //     default: false,
+  // },
+  // isDeleted: {
+  //     type: Boolean,
+  //     default: false,
+  // },
+},
+targetDir: "../src/apps"
+});

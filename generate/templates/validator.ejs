@@ -1,7 +1,7 @@
 // Need to add validator for the project
 import Joi from "joi";
 
-export const loginValidator = Joi.object({
+export const create<%= appName.pascal %>Validator = Joi.object({
   email: Joi.string().email().required().messages({
     "string.email": "Invalid email format",
     "any.required": "Email is required",
@@ -9,4 +9,31 @@ export const loginValidator = Joi.object({
   password: Joi.string().required().messages({
     "any.required": "Password is required",
   }),
+});
+
+export const update<%= appName.pascal %>Validator = Joi.object({
+  <%_ Object.entries(JSON.parse(updateBody)).forEach(([key, value]) => { _%>
+  <%_ if (value.type === 'String' && key === 'email') { _%>
+  <%= key %>: Joi.string().email().messages({
+    "string.email": "Invalid email format",
+    "string.base": "<%= key %> must be a string",
+  }),
+  <%_ } else if (value.type === 'String') { _%>
+  <%= key %>: Joi.string().messages({
+    "string.base": "<%= key %> must be a string",
+  }),
+  <%_ } else if (value.type === 'Boolean') { _%>
+  <%= key %>: Joi.boolean().messages({
+    "boolean.base": "<%= key %> must be a boolean",
+  }),
+  <%_ } else if (value.type === 'Number') { _%>
+  <%= key %>: Joi.number().messages({
+    "number.base": "<%= key %> must be a number",
+  }),
+  <%_ } else if (value.type === 'Date') { _%>
+  <%= key %>: Joi.date().messages({
+    "date.base": "<%= key %> must be a date",
+  }),
+  <%_ } _%>
+  <%_ }); _%>
 });
