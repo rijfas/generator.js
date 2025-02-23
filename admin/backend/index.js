@@ -1,23 +1,36 @@
 import { login } from "./controllers/auth.controller.js";
-import { 
-  getAllApps, getAppById, createApp, updateApp, deleteApp 
+import {
+  getAllApps,
+  getAppById,
+  createApp,
+  updateApp,
+  deleteApp,
 } from "./controllers/apps.controller.js";
 import {
-  getAllSchemas, getSchemaById, createSchema, updateSchema, deleteSchema
+  getAllSchemas,
+  getSchemaById,
+  createSchema,
+  updateSchema,
+  deleteSchema,
 } from "./controllers/schemas.controller.js";
+import {
+  getCollections,
+  getCollectionInfo,
+  createEntry,
+  updateEntry,
+  deleteEntry,
+} from "./controllers/collection.controller.js";
 
 class AdminApi {
-  constructor(app) {
+  constructor(app, mongoose) {
     this.app = app;
+    this.mongoose = mongoose;
   }
   register() {
     console.log("Admin API registered");
     this.app.route("/api/admin/auth/login").post(login);
 
-    this.app
-      .route("/api/admin/apps/")
-      .get(getAllApps)
-      .post(createApp);
+    this.app.route("/api/admin/apps/").get(getAllApps).post(createApp);
 
     this.app
       .route("/api/admin/apps/:id")
@@ -54,6 +67,23 @@ class AdminApi {
     this.app
       .route("/api/admin/apps/:id/endpoints/:endpoint_id/roles")
       .put(/* Update roles */);
+
+    this.app.use((req, res, next) => {
+      req.mongoose = this.mongoose;
+      next();
+    });
+
+    this.app.route("/api/admin/collections").get(getCollections);
+
+    this.app
+      .route("/api/admin/collections/:collection_name")
+      .get(getCollectionInfo)
+      .post(createEntry);
+
+    this.app
+      .route("/api/admin/collections/:collection_name/:entry_id")
+      .put(updateEntry)
+      .delete(deleteEntry);
 
     this.app.listen(2233);
   }

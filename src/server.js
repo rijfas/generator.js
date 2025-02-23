@@ -10,8 +10,9 @@ import log from "./middlewares/log.middleware.js";
 import envConfig from "./configs/env.config.js";
 import { connectDB } from "./utils/db.util.js";
 import AdminApi from "../admin/backend/index.js";
+import mongoose from "mongoose";
 
-// connectDB(envConfig.mongoUri);
+connectDB(envConfig.mongoUri);
 
 const app = express();
 
@@ -29,7 +30,7 @@ app.use(helmet());
 app.use(morgan("tiny"));
 app.use(log);
 
-const adminApi = new AdminApi(app);
+const adminApi = new AdminApi(app, mongoose);
 adminApi.register();
 
 app.use("/api", router);
