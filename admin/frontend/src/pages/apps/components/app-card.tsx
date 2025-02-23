@@ -28,7 +28,7 @@ export default function AppCard({
 
   return (
     <Card
-      className="relative overflow-hidden text-white shadow-lg"
+      className="relative overflow-hidden text-white shadow-lg" 
       style={{
         backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)), url("${pattern}")`,
         backgroundSize: "cover",
@@ -40,7 +40,7 @@ export default function AppCard({
         <CardDescription>{app.description}</CardDescription>
       </CardHeader>
       <CardContent className="relative z-10">
-        <Button variant="secondary">
+        <Button className="text-black bg-white">
           <Link to={`/${app.id}/schemas/`}>Go to app</Link>
         </Button>
       </CardContent>
