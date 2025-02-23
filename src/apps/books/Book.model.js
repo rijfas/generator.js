@@ -5,7 +5,7 @@ const Book = new mongoose.Schema({
     "type": "string",
     "required": true
   },
-  "age": {
+  "price": {
     "type": "number",
     "required": true
   }
