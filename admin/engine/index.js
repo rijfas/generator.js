@@ -195,14 +195,12 @@ class GeneratorEngine {
 
       const schemas = [];
       for (const schemaFile of schemaFiles) {
-        const schemaContent = await fs.readFile(
-          path.join(appPath, schemaFile),
-          "utf-8"
-        );
         const schemaModule = await import(
           `file://${path.join(appPath, schemaFile)}`
         );
+
         const schema = schemaModule.default.schema.obj;
+
         schemas.push({
           name: schemaFile.replace(".model.js", ""),
           schema,

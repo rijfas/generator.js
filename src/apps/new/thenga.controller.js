@@ -1,13 +1,13 @@
 import { StatusCodes } from "http-status-codes";
 import { successResponse } from "../../utils/response.util.js";
-import User from "./User.model.js";
+import Thenga from "./Thenga.model.js";
 
-export const createUser = async(req, res, next) => {
-  const { name } = req.body;
-  const data = await User.create({ name });
+export const createThenga = async(req, res, next) => {
+  const { name, age } = req.body;
+  const data = await Thenga.create({ name, age });
   return successResponse(res, {
     statusCode: StatusCodes.CREATED,
-    message: "User created successfully",
+    message: "Thenga created successfully",
     metadata: {
       timeStamp: new Date(),
     },
@@ -15,11 +15,11 @@ export const createUser = async(req, res, next) => {
 };
 
 
-export const readUsers = async(req, res, next) => {
-  const data = await User.find({});
+export const readThengas = async(req, res, next) => {
+  const data = await Thenga.find({});
   return successResponse(res, {
     statusCode: StatusCodes.OK,
-    message: "Users fetched successfully",
+    message: "Thengas fetched successfully",
     data: data,
     metadata: {
       timeStamp: new Date(),
@@ -27,12 +27,12 @@ export const readUsers = async(req, res, next) => {
   });
 };
 
-export const readUser = async(req, res, next) => {
+export const readThenga = async(req, res, next) => {
   const { id } = req.params;
-  const data = await User.findById(id);
+  const data = await Thenga.findById(id);
   return successResponse(res, {
     statusCode: StatusCodes.OK,
-    message: "User fetched successfully",
+    message: "Thenga fetched successfully",
     data: data,
     metadata: {
       timeStamp: new Date(),
@@ -40,13 +40,13 @@ export const readUser = async(req, res, next) => {
   });
 };
 
-export const updateUser = async(req, res, next) => {
+export const updateThenga = async(req, res, next) => {
   const { id } = req.params;
-  const { name } = req.body;
-  const data = await User.findByIdAndUpdate(id, { name });
+  const { name, age } = req.body;
+  const data = await Thenga.findByIdAndUpdate(id, { name, age });
   return successResponse(res, {
     statusCode: StatusCodes.OK,
-    message: "User updated successfully",
+    message: "Thenga updated successfully",
     data: data,
     metadata: {
       timeStamp: new Date(),
@@ -54,12 +54,12 @@ export const updateUser = async(req, res, next) => {
   });
 };
 
-export const deleteUser = async(req, res, next) => {
+export const deleteThenga = async(req, res, next) => {
   const { id } = req.params;
-  const data = await User.findByIdAndDelete(id);
+  const data = await Thenga.findByIdAndDelete(id);
   return successResponse(res, {
     statusCode: StatusCodes.OK,
-    message: "User deleted successfully",
+    message: "Thenga deleted successfully",
     metadata: {
       timeStamp: new Date(),
     },

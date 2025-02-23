@@ -1,13 +1,13 @@
 import { StatusCodes } from "http-status-codes";
 import { successResponse } from "../../utils/response.util.js";
-import User from "./User.model.js";
+import Cat from "./Cat.model.js";
 
-export const createUser = async(req, res, next) => {
+export const createCat = async(req, res, next) => {
   const { name } = req.body;
-  const data = await User.create({ name });
+  const data = await Cat.create({ name });
   return successResponse(res, {
     statusCode: StatusCodes.CREATED,
-    message: "User created successfully",
+    message: "Cat created successfully",
     metadata: {
       timeStamp: new Date(),
     },
@@ -15,11 +15,11 @@ export const createUser = async(req, res, next) => {
 };
 
 
-export const readUsers = async(req, res, next) => {
-  const data = await User.find({});
+export const readCats = async(req, res, next) => {
+  const data = await Cat.find({});
   return successResponse(res, {
     statusCode: StatusCodes.OK,
-    message: "Users fetched successfully",
+    message: "Cats fetched successfully",
     data: data,
     metadata: {
       timeStamp: new Date(),
@@ -27,12 +27,12 @@ export const readUsers = async(req, res, next) => {
   });
 };
 
-export const readUser = async(req, res, next) => {
+export const readCat = async(req, res, next) => {
   const { id } = req.params;
-  const data = await User.findById(id);
+  const data = await Cat.findById(id);
   return successResponse(res, {
     statusCode: StatusCodes.OK,
-    message: "User fetched successfully",
+    message: "Cat fetched successfully",
     data: data,
     metadata: {
       timeStamp: new Date(),
@@ -40,13 +40,13 @@ export const readUser = async(req, res, next) => {
   });
 };
 
-export const updateUser = async(req, res, next) => {
+export const updateCat = async(req, res, next) => {
   const { id } = req.params;
   const { name } = req.body;
-  const data = await User.findByIdAndUpdate(id, { name });
+  const data = await Cat.findByIdAndUpdate(id, { name });
   return successResponse(res, {
     statusCode: StatusCodes.OK,
-    message: "User updated successfully",
+    message: "Cat updated successfully",
     data: data,
     metadata: {
       timeStamp: new Date(),
@@ -54,12 +54,12 @@ export const updateUser = async(req, res, next) => {
   });
 };
 
-export const deleteUser = async(req, res, next) => {
+export const deleteCat = async(req, res, next) => {
   const { id } = req.params;
-  const data = await User.findByIdAndDelete(id);
+  const data = await Cat.findByIdAndDelete(id);
   return successResponse(res, {
     statusCode: StatusCodes.OK,
-    message: "User deleted successfully",
+    message: "Cat deleted successfully",
     metadata: {
       timeStamp: new Date(),
     },
