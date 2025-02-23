@@ -2,6 +2,10 @@ import { camelCase, pascalCase } from "change-case";
 import fs from "fs";
 import mongoose from "mongoose";
 import pluralize from "pluralize";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const processAppName = (name) => {
   const pascal = pascalCase(name);
@@ -48,7 +52,7 @@ const serializeSchema = (schema) => {
 
 const appendRouter = (appName, modelName, targetDir) => {
   // Update router.js with new route
-  const routerPath = new URL(`${targetDir}/../router.js`, import.meta.url);
+  const routerPath = path.resolve(__dirname, targetDir, "../router.js");
   let routerContent = fs.readFileSync(routerPath, "utf8");
 
   // Add import statement if not exists

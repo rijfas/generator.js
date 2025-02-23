@@ -4,12 +4,13 @@ import fs from "fs-extra";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 import { appendRouter, processAppName, serializeSchema } from "./utils.js";
+import path from "path";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export const generateApp = ({ appName, targetDir = process.cwd() }) => {
   appName = processAppName(appName);
-  const appDir = new URL(`${targetDir}/${appName.original}`, import.meta.url);
+  const appDir = path.resolve(__dirname, targetDir, appName.original);
 
   // Create app directory
   fs.ensureDirSync(appDir);
@@ -25,7 +26,10 @@ export const addModel = ({
 }) => {
   appName = processAppName(appName);
   modelName = processAppName(modelName);
-  const appDir = new URL(`${targetDir}/${appName.original}`, import.meta.url);
+  // const appDir = new URL(`${targetDir}/${appName.original}`, import.meta.url);
+
+  const appDir = path.resolve(__dirname, targetDir, appName.original);
+  
 
   // Generate model file
   const modelTemplatePath = new URL(`./templates/model.ejs`, import.meta.url);
@@ -35,7 +39,8 @@ export const addModel = ({
   });
   const modelFileName = `${modelName.pascal}.model.js`;
   fs.writeFileSync(
-    new URL(`${appName.original}/${modelFileName}`, appDir),
+    // new URL(`${appName.original}/${modelFileName}`, appDir),
+    path.resolve(appDir, modelFileName),
     modelContent
   );
 
@@ -55,7 +60,8 @@ export const addModel = ({
   );
   const controllerFileName = `${modelName.original}.controller.js`;
   fs.writeFileSync(
-    new URL(`${appName.original}/${controllerFileName}`, appDir),
+    // new URL(`${appName.original}/${controllerFileName}`, appDir)
+    path.resolve(appDir, controllerFileName),
     controllerContent
   );
 
@@ -69,7 +75,8 @@ export const addModel = ({
   );
   const routerFileName = `${modelName.original}.router.js`;
   fs.writeFileSync(
-    new URL(`${appName.original}/${routerFileName}`, appDir),
+    // new URL(`${appName.original}/${routerFileName}`, appDir),
+    path.resolve(appDir, routerFileName),
     routerContent
   );
 

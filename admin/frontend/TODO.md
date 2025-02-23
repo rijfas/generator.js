@@ -7,8 +7,8 @@
 - [x] Set up **React Router** for navigation
 - [ ] Set up axios, tanstack query
 <!-- - [ ] Implement **authentication flow (login, logout, protected routes)** -->
-- [ ] Create **Admin Dashboard layout**
-- [ ] Implement **App Creation UI**
+- [x] Create **Admin Dashboard layout**
+- [x] Implement **App Creation UI**
 - [ ] Implement **Collection/Model UI**
 - [ ] Implement **API Management UI**
 - [ ] Connect frontend to backend API endpoints

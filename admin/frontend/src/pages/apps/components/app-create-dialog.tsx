@@ -10,6 +10,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { useCreateApp } from "@/services/apps/create-app";
 import { Plus } from "lucide-react";
 import React, { useState } from "react";
 
@@ -35,6 +36,7 @@ export default function AppCreateDialog({
   >;
 }) {
   const [open, setOpen] = useState(false);
+  const { mutate } = useCreateApp();
 
   const [newApp, setNewApp] = useState({
     name: "",
@@ -47,16 +49,19 @@ export default function AppCreateDialog({
     setApps([...apps, { ...newApp, id: newId, icon: "" }]);
     setNewApp({ name: "", description: "" });
     setOpen(false);
+    mutate({
+      appName: newApp.name,
+    });
   };
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Card className='cursor-pointer hover:shadow-lg transition-shadow min-h-[140px] flex flex-col items-center justify-center'>
+        <Card className="cursor-pointer hover:shadow-lg transition-shadow min-h-[140px] flex flex-col items-center justify-center">
           <CardHeader>
-            <Plus className='w-8 h-8 text-gray-400' />
+            <Plus className="w-8 h-8 text-gray-400" />
           </CardHeader>
           <CardContent>
-            <p className='text-gray-500'>Create New App</p>
+            <p className="text-gray-500">Create New App</p>
           </CardContent>
         </Card>
       </DialogTrigger>
@@ -64,30 +69,30 @@ export default function AppCreateDialog({
         <DialogHeader>
           <DialogTitle>Create New App</DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleSubmit} className='space-y-4'>
-          <div className='space-y-2'>
-            <Label htmlFor='name'>App Name</Label>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="name">App Name</Label>
             <Input
-              id='name'
+              id="name"
               value={newApp.name}
               onChange={(e) => setNewApp({ ...newApp, name: e.target.value })}
-              placeholder='Enter app name'
+              placeholder="Enter app name"
               required
             />
           </div>
-          <div className='space-y-2'>
-            <Label htmlFor='description'>Description</Label>
+          <div className="space-y-2">
+            <Label htmlFor="description">Description</Label>
             <Textarea
-              id='description'
+              id="description"
               value={newApp.description}
               onChange={(e) =>
                 setNewApp({ ...newApp, description: e.target.value })
               }
-              placeholder='Enter app description'
+              placeholder="Enter app description"
               required
             />
           </div>
-          <Button type='submit' className='w-full'>
+          <Button type="submit" className="w-full">
             Create App
           </Button>
         </form>
