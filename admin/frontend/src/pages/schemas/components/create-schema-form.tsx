@@ -17,8 +17,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useCreateSchema } from "@/services/schemas/create-schema";
 import { Plus, Trash2 } from "lucide-react";
 import { useFieldArray, useForm } from "react-hook-form";
+import { useParams } from "react-router";
 
 interface SchemaProperty {
   name: string;
@@ -29,6 +31,12 @@ interface SchemaProperty {
 interface CreateSchemaFormProps {
   onSuccess?: (schema: object) => void;
   onCancel?: () => void;
+}
+
+export interface Schema {
+  name: string;
+  // description?: string;
+  properties: SchemaProperty[];
 }
 
 export function CreateSchemaForm({
@@ -58,14 +66,10 @@ export function CreateSchemaForm({
     "date",
   ];
 
-  const onSubmit = (data: {
-    name: string;
-    description: string;
-    properties: SchemaProperty[];
-  }) => {
+  const onSubmit = (data: Schema) => {
     const schema = {
       name: data.name,
-      description: data.description,
+      // description: data.description,
       type: "object",
       properties: data.properties.reduce(
         (acc, prop) => ({
@@ -78,60 +82,64 @@ export function CreateSchemaForm({
         .filter((prop) => prop.required)
         .map((prop) => prop.name),
     };
-
+    mutate(data);
     if (onSuccess) onSuccess(schema);
   };
 
+  const params = useParams();
+  const appName = params.name;
+  const { mutate } = useCreateSchema(appName!);
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
-        <div className='space-y-4'>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <div className="space-y-4">
           <FormField
             control={form.control}
-            name='name'
+            name="name"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Schema Name</FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder='Enter schema name' />
+                  <Input {...field} placeholder="Enter schema name" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
 
-          <FormField
+          {/* <FormField
             control={form.control}
-            name='description'
+            name="description"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Description</FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder='Enter schema description' />
+                  <Input {...field} placeholder="Enter schema description" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
-          />
+          /> */}
         </div>
 
-        <div className='relative'>
-          <ScrollArea className='h-[400px] pr-4 -mr-4'>
-            <div className='space-y-4'>
+        <div className="relative">
+          <ScrollArea className="h-[400px] pr-4 -mr-4">
+            <div className="space-y-4">
               {fields.map((field, index) => (
                 <Card key={field.id}>
-                  <CardContent className='pt-6'>
-                    <div className='flex gap-4'>
+                  <CardContent className="pt-6">
+                    <div className="flex gap-4">
                       <FormField
                         control={form.control}
                         name={`properties.${index}.name`}
                         render={({ field }) => (
-                          <FormItem className='flex-1'>
+                          <FormItem className="flex-1">
                             <FormLabel>Property Name</FormLabel>
                             <FormControl>
                               <Input
                                 {...field}
-                                placeholder='Enter property name'
+                                placeholder="Enter property name"
                               />
                             </FormControl>
                             <FormMessage />
@@ -143,7 +151,7 @@ export function CreateSchemaForm({
                         control={form.control}
                         name={`properties.${index}.type`}
                         render={({ field }) => (
-                          <FormItem className='flex-1'>
+                          <FormItem className="flex-1">
                             <FormLabel>Type</FormLabel>
                             <Select
                               value={field.value}
@@ -167,34 +175,34 @@ export function CreateSchemaForm({
                         )}
                       />
 
-                      <FormItem className='flex items-end'>
+                      <FormItem className="flex items-end">
                         <Button
-                          type='button'
-                          variant='destructive'
-                          size='icon'
+                          type="button"
+                          variant="destructive"
+                          size="icon"
                           onClick={() => fields.length > 1 && remove(index)}
                           disabled={fields.length === 1}
                         >
-                          <Trash2 className='h-4 w-4' />
+                          <Trash2 className="h-4 w-4" />
                         </Button>
                       </FormItem>
                     </div>
 
-                    <div className='mt-2'>
+                    <div className="mt-2">
                       <FormField
                         control={form.control}
                         name={`properties.${index}.required`}
                         render={({ field }) => (
                           <FormItem>
                             <FormControl>
-                              <label className='flex items-center space-x-2'>
+                              <label className="flex items-center space-x-2">
                                 <input
-                                  type='checkbox'
+                                  type="checkbox"
                                   checked={field.value}
                                   onChange={field.onChange}
-                                  className='h-4 w-4 rounded border-gray-300'
+                                  className="h-4 w-4 rounded border-gray-300"
                                 />
-                                <span className='text-sm text-gray-600'>
+                                <span className="text-sm text-gray-600">
                                   Required field
                                 </span>
                               </label>
@@ -211,24 +219,24 @@ export function CreateSchemaForm({
           </ScrollArea>
         </div>
 
-        <div className='flex flex-col gap-4'>
+        <div className="flex flex-col gap-4">
           <Button
-            type='button'
-            variant='outline'
+            type="button"
+            variant="outline"
             onClick={() => append({ name: "", type: "string", required: true })}
-            className='flex items-center gap-2'
+            className="flex items-center gap-2"
           >
-            <Plus className='h-4 w-4' />
+            <Plus className="h-4 w-4" />
             Add Property
           </Button>
 
-          <div className='flex justify-end space-x-2'>
+          <div className="flex justify-end space-x-2">
             {onCancel && (
-              <Button type='button' variant='outline' onClick={onCancel}>
+              <Button type="button" variant="outline" onClick={onCancel}>
                 Cancel
               </Button>
             )}
-            <Button type='submit'>Create Schema</Button>
+            <Button type="submit">Create Schema</Button>
           </div>
         </div>
       </form>
