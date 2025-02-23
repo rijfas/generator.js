@@ -1,7 +1,0 @@
-import mongoose from "mongoose";
-
-const <%= appName.pascal %> = new mongoose.Schema(<%- collectionSchema %>,
-{ timestamps: true }
-);
-
-export default mongoose.model("<%= appName.pluralLower %>", <%= appName.pascal %>);

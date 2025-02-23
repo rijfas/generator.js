@@ -1,13 +1,13 @@
 import { StatusCodes } from "http-status-codes";
 import { successResponse } from "../../utils/response.util.js";
-import <%= appName.pascal %> from "./<%= appName.original %>.model.js";
+import <%= modelName.pascal %> from "./<%= modelName.original %>.model.js";
 
-export const create<%= appName.pascal %> = async(req, res, next) => {
+export const create<%= modelName.pascal %> = async(req, res, next) => {
   const { <%= createBody %> } = req.body;
-  const data = await <%= appName.pascal %>.create({ <%= createBody %> });
+  const data = await <%= modelName.pascal %>.create({ <%= createBody %> });
   return successResponse(res, {
     statusCode: StatusCodes.CREATED,
-    message: "<%= appName.originalCapital %> created successfully",
+    message: "<%= modelName.originalCapital %> created successfully",
     metadata: {
       timeStamp: new Date(),
     },
@@ -15,11 +15,11 @@ export const create<%= appName.pascal %> = async(req, res, next) => {
 };
 
 
-export const read<%= appName.pascal %>s = async(req, res, next) => {
-  const data = await <%= appName.pascal %>.find({});
+export const read<%= modelName.pascal %>s = async(req, res, next) => {
+  const data = await <%= modelName.pascal %>.find({});
   return successResponse(res, {
     statusCode: StatusCodes.OK,
-    message: "<%= appName.originalCapital %>s fetched successfully",
+    message: "<%= modelName.originalCapital %>s fetched successfully",
     data: data,
     metadata: {
       timeStamp: new Date(),
@@ -27,12 +27,12 @@ export const read<%= appName.pascal %>s = async(req, res, next) => {
   });
 };
 
-export const read<%= appName.pascal %> = async(req, res, next) => {
+export const read<%= modelName.pascal %> = async(req, res, next) => {
   const { id } = req.params;
-  const data = await <%= appName.pascal %>.findById(id);
+  const data = await <%= modelName.pascal %>.findById(id);
   return successResponse(res, {
     statusCode: StatusCodes.OK,
-    message: "<%= appName.originalCapital %> fetched successfully",
+    message: "<%= modelName.originalCapital %> fetched successfully",
     data: data,
     metadata: {
       timeStamp: new Date(),
@@ -40,13 +40,13 @@ export const read<%= appName.pascal %> = async(req, res, next) => {
   });
 };
 
-export const update<%= appName.pascal %> = async(req, res, next) => {
+export const update<%= modelName.pascal %> = async(req, res, next) => {
   const { id } = req.params;
   const { <%= updateBody %> } = req.body;
-  const data = await <%= appName.pascal %>.findByIdAndUpdate(id, { <%= updateBody %> });
+  const data = await <%= modelName.pascal %>.findByIdAndUpdate(id, { <%= updateBody %> });
   return successResponse(res, {
     statusCode: StatusCodes.OK,
-    message: "<%= appName.originalCapital %> updated successfully",
+    message: "<%= modelName.originalCapital %> updated successfully",
     data: data,
     metadata: {
       timeStamp: new Date(),
@@ -54,12 +54,12 @@ export const update<%= appName.pascal %> = async(req, res, next) => {
   });
 };
 
-export const delete<%= appName.pascal %> = async(req, res, next) => {
+export const delete<%= modelName.pascal %> = async(req, res, next) => {
   const { id } = req.params;
-  const data = await <%= appName.pascal %>.findByIdAndDelete(id);
+  const data = await <%= modelName.pascal %>.findByIdAndDelete(id);
   return successResponse(res, {
     statusCode: StatusCodes.OK,
-    message: "<%= appName.originalCapital %> deleted successfully",
+    message: "<%= modelName.originalCapital %> deleted successfully",
     metadata: {
       timeStamp: new Date(),
     },
