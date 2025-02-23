@@ -10,7 +10,7 @@ export default function AppRoutes() {
   return (
     <Routes>
       <Route path='/' element={<AppsPage />} />
-      <Route path='/:name/' element={<RootLayout />}>
+      <Route path='/:appName/' element={<RootLayout />}>
         <Route index={true} path='schemas' element={<SchemaListingPage />} />
         <Route path='collections' element={<CollectionsPage />} />
         <Route path='settings' element={<SettingsPage />} />

@@ -1,11 +1,22 @@
 import { Button } from "@/components/ui/button";
-import { Database, Menu, Settings, Unplug, FolderKanban } from "lucide-react";
+import {
+  ArrowLeft,
+  Database,
+  FolderKanban,
+  Menu,
+  Settings,
+  Unplug,
+} from "lucide-react";
 import { useState } from "react";
-import { Link, useLocation } from "react-router";
+import { Link, useLocation, useParams } from "react-router";
 
 const navItems = [
   { name: "Schemas", href: "schemas", icon: <Database className='w-5 h-5' /> },
-  { name: "Collections", href: "collections", icon: <FolderKanban className='w-5 h-5' /> },
+  {
+    name: "Collections",
+    href: "collections",
+    icon: <FolderKanban className='w-5 h-5' />,
+  },
   {
     name: "Endpoints",
     href: "endpoints",
@@ -21,6 +32,7 @@ const navItems = [
 export function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const location = useLocation();
+  const { appName } = useParams();
 
   return (
     <div
@@ -28,7 +40,6 @@ export function Sidebar() {
         collapsed ? "w-16" : "w-60"
       }`}
     >
-      {/* Sidebar Header */}
       <div className='flex items-center justify-between'>
         {!collapsed && <span className='font-semibold'>Generator.js</span>}
         <Button
@@ -39,6 +50,12 @@ export function Sidebar() {
           <Menu className='w-5 h-5' />
         </Button>
       </div>
+
+      {!collapsed && appName && (
+        <div className='mt-4'>
+          <h2 className='text-lg font-bold'>{appName}</h2>
+        </div>
+      )}
 
       {/* Navigation Items */}
       <nav className='mt-6 space-y-2'>
@@ -59,6 +76,18 @@ export function Sidebar() {
           );
         })}
       </nav>
+
+      <div className='mt-6'>
+        <Link to='/'>
+          <Button
+            variant='ghost'
+            className='w-full flex items-center gap-2 mb-3'
+          >
+            <ArrowLeft className='w-5 h-5' />
+            {!collapsed && <span>Back to Apps</span>}
+          </Button>
+        </Link>
+      </div>
     </div>
   );
 }
