@@ -1,0 +1,12 @@
+import express from 'express';
+import { read<%= modelName.pascal %>s, read<%= modelName.pascal %>, create<%= modelName.pascal %>, update<%= modelName.pascal %>, delete<%= modelName.pascal %> } from './<%= modelName.original %>.controller.js';
+
+const router = express.Router();
+
+router.get('/', read<%= modelName.pascal %>s);
+router.get('/:id', read<%= modelName.pascal %>);
+router.post('/', create<%= modelName.pascal %>);
+router.put('/:id', update<%= modelName.pascal %>);
+router.delete('/:id', delete<%= modelName.pascal %>);
+
+export default router;
