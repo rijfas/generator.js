@@ -7,13 +7,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
+import { Collapsible, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Input } from "@/components/ui/input";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Select,
   SelectContent,
@@ -22,8 +17,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
+import { useGetEndpoints } from "@/services/endpoints/get-endpoints";
 import { ChevronDown, ChevronRight, Edit2, Plus, Trash2 } from "lucide-react";
 import { useState } from "react";
+import { useParams } from "react-router";
 
 interface Parameter {
   name: string;
@@ -33,14 +30,8 @@ interface Parameter {
 }
 
 interface Endpoint {
-  id: string;
-  name: string;
   method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
   path: string;
-  description?: string;
-  queryParams: Parameter[];
-  requestBody?: Parameter[];
-  responseBody?: Parameter[];
 }
 
 const methodColors = {
@@ -49,6 +40,23 @@ const methodColors = {
   PUT: "bg-yellow-500",
   DELETE: "bg-red-500",
   PATCH: "bg-purple-500",
+};
+
+const getVerboseName = (method: string, path: string) => {
+  switch (method) {
+    case "GET":
+      return `Get ${path}`;
+    case "POST":
+      return `Create ${path}`;
+    case "PUT":
+      return `Update ${path}`;
+    case "DELETE":
+      return `Delete ${path}`;
+    case "PATCH":
+      return `Edit ${path}`;
+    default:
+      return `${method} ${path}`;
+  }
 };
 
 function ParameterEditor({
@@ -163,6 +171,11 @@ function EndpointCard({ endpoint }: { endpoint: Endpoint }) {
     console.log("Saving endpoint:", currentEndpoint);
   };
 
+  const endpointName = getVerboseName(
+    currentEndpoint.method,
+    currentEndpoint.path
+  );
+
   return (
     <Card>
       <CardHeader className='p-4'>
@@ -174,7 +187,7 @@ function EndpointCard({ endpoint }: { endpoint: Endpoint }) {
               {currentEndpoint.method}
             </Badge>
             <div>
-              <CardTitle className='text-lg'>{currentEndpoint.name}</CardTitle>
+              <CardTitle className='text-lg'>{endpointName}</CardTitle>
               <CardDescription className='font-mono'>
                 {currentEndpoint.path}
               </CardDescription>
@@ -200,225 +213,27 @@ function EndpointCard({ endpoint }: { endpoint: Endpoint }) {
           </div>
         </div>
       </CardHeader>
-
-      <CollapsibleContent>
-        <CardContent className='p-4 pt-0'>
-          <ScrollArea className='h-full max-h-[600px]'>
-            <div className='space-y-6'>
-              {isEditing ? (
-                <>
-                  <div className='space-y-4'>
-                    <Input
-                      placeholder='Endpoint name'
-                      value={currentEndpoint.name}
-                      onChange={(e) =>
-                        setCurrentEndpoint({
-                          ...currentEndpoint,
-                          name: e.target.value,
-                        })
-                      }
-                    />
-                    <Input
-                      placeholder='Path'
-                      value={currentEndpoint.path}
-                      onChange={(e) =>
-                        setCurrentEndpoint({
-                          ...currentEndpoint,
-                          path: e.target.value,
-                        })
-                      }
-                    />
-                    <Select
-                      value={currentEndpoint.method}
-                      onValueChange={(value: Endpoint["method"]) =>
-                        setCurrentEndpoint({
-                          ...currentEndpoint,
-                          method: value,
-                        })
-                      }
-                    >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value='GET'>GET</SelectItem>
-                        <SelectItem value='POST'>POST</SelectItem>
-                        <SelectItem value='PUT'>PUT</SelectItem>
-                        <SelectItem value='DELETE'>DELETE</SelectItem>
-                        <SelectItem value='PATCH'>PATCH</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <ParameterEditor
-                    title='Query Parameters'
-                    parameters={currentEndpoint.queryParams}
-                    onUpdate={(params) =>
-                      setCurrentEndpoint({
-                        ...currentEndpoint,
-                        queryParams: params,
-                      })
-                    }
-                  />
-
-                  <ParameterEditor
-                    title='Request Body'
-                    parameters={currentEndpoint.requestBody || []}
-                    onUpdate={(params) =>
-                      setCurrentEndpoint({
-                        ...currentEndpoint,
-                        requestBody: params,
-                      })
-                    }
-                  />
-
-                  <ParameterEditor
-                    title='Response Body'
-                    parameters={currentEndpoint.responseBody || []}
-                    onUpdate={(params) =>
-                      setCurrentEndpoint({
-                        ...currentEndpoint,
-                        responseBody: params,
-                      })
-                    }
-                  />
-
-                  <div className='flex justify-end space-x-2'>
-                    <Button
-                      variant='outline'
-                      onClick={() => setIsEditing(false)}
-                    >
-                      Cancel
-                    </Button>
-                    <Button onClick={handleSave}>Save Changes</Button>
-                  </div>
-                </>
-              ) : (
-                <div className='space-y-6'>
-                  {currentEndpoint.queryParams.length > 0 && (
-                    <div>
-                      <h3 className='font-medium mb-2'>Query Parameters</h3>
-                      {currentEndpoint.queryParams.map((param, index) => (
-                        <div
-                          key={index}
-                          className='flex items-center space-x-2 text-sm'
-                        >
-                          <Badge variant='outline'>{param.name}</Badge>
-                          <span className='text-muted-foreground'>
-                            {param.type}
-                          </span>
-                          {param.required && <Badge>Required</Badge>}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-
-                  {currentEndpoint.requestBody &&
-                    currentEndpoint.requestBody.length > 0 && (
-                      <div>
-                        <h3 className='font-medium mb-2'>Request Body</h3>
-                        {currentEndpoint.requestBody.map((param, index) => (
-                          <div
-                            key={index}
-                            className='flex items-center space-x-2 text-sm'
-                          >
-                            <Badge variant='outline'>{param.name}</Badge>
-                            <span className='text-muted-foreground'>
-                              {param.type}
-                            </span>
-                            {param.required && <Badge>Required</Badge>}
-                          </div>
-                        ))}
-                      </div>
-                    )}
-
-                  {currentEndpoint.responseBody &&
-                    currentEndpoint.responseBody.length > 0 && (
-                      <div>
-                        <h3 className='font-medium mb-2'>Response Body</h3>
-                        {currentEndpoint.responseBody.map((param, index) => (
-                          <div
-                            key={index}
-                            className='flex items-center space-x-2 text-sm'
-                          >
-                            <Badge variant='outline'>{param.name}</Badge>
-                            <span className='text-muted-foreground'>
-                              {param.type}
-                            </span>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                </div>
-              )}
-            </div>
-          </ScrollArea>
-        </CardContent>
-      </CollapsibleContent>
     </Card>
   );
 }
 
-const sampleEndpoints: Endpoint[] = [
-  {
-    id: "1",
-    name: "Get Users",
-    method: "GET",
-    path: "/api/users",
-    queryParams: [
-      {
-        name: "page",
-        type: "number",
-        required: false,
-        description: "Page number",
-      },
-      {
-        name: "limit",
-        type: "number",
-        required: false,
-        description: "Items per page",
-      },
-    ],
-    responseBody: [
-      { name: "users", type: "array", required: true },
-      { name: "total", type: "number", required: true },
-    ],
-  },
-  {
-    id: "2",
-    name: "Create User",
-    method: "POST",
-    path: "/api/users",
-    requestBody: [
-      { name: "username", type: "string", required: true },
-      { name: "email", type: "string", required: true },
-      { name: "password", type: "string", required: true },
-    ],
-    queryParams: [],
-    responseBody: [
-      { name: "id", type: "string", required: true },
-      { name: "username", type: "string", required: true },
-    ],
-  },
-];
-
 export default function EndpointsPage() {
+  const { appName } = useParams();
+  const { data } = useGetEndpoints(appName!);
+
   return (
     <div className='space-y-6 p-6'>
       <div className='flex items-center justify-between'>
         <h1 className='text-3xl font-bold'>Endpoints</h1>
-        <Button>
-          <Plus className='h-4 w-4 mr-2' />
-          Add Endpoint
-        </Button>
       </div>
 
       <div className='grid gap-4'>
-        {sampleEndpoints.map((endpoint) => (
-          <Collapsible key={endpoint.id}>
-            <EndpointCard endpoint={endpoint} />
-          </Collapsible>
-        ))}
+        {data &&
+          data.map((endpoint: any) => (
+            <Collapsible key={endpoint.id}>
+              <EndpointCard endpoint={endpoint} />
+            </Collapsible>
+          ))}
       </div>
     </div>
   );
