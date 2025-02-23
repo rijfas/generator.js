@@ -13,7 +13,7 @@ export default function AppsPage() {
       </div>
       <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
         {apps.map((app) => (
-          <AppCard app={app} key={app.id} />
+          <AppCard app={app} key={app.name} />
         ))}
         <AppCreateDialog apps={apps} setApps={setApps} />
       </div>

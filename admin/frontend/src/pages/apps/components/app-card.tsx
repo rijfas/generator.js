@@ -2,21 +2,20 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
-  CardTitle,
+  CardTitle
 } from "@/components/ui/card";
-import { Link } from "react-router";
 import geoPattern from "geopattern";
 import { useMemo } from "react";
+import { Link } from "react-router";
 
 export default function AppCard({
   app,
 }: {
   app: {
-    id: number;
     name: string;
-    description: string;
+    // id: number;
+    // description?: string;
   };
 }) {
   // Generate pattern and encode it for use as a background
@@ -37,11 +36,11 @@ export default function AppCard({
     >
       <CardHeader className="relative z-10">
         <CardTitle>{app.name}</CardTitle>
-        <CardDescription>{app.description}</CardDescription>
+        {/* <CardDescription>{app.description}</CardDescription> */}
       </CardHeader>
       <CardContent className="relative z-10">
         <Button className="text-black bg-white">
-          <Link to={`/${app.id}/schemas/`}>Go to app</Link>
+          <Link to={`/${app.name}/schemas/`}>Go to app</Link>
         </Button>
       </CardContent>
     </Card>
