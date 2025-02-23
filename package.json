@@ -7,7 +7,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node --env-file=.env src/server.js",
-    "dev": "node --env-file=.env --watch src/server.js"
+    "dev": "concurrently \"npm run dev --workspaces\" \"node --env-file=.env --watch src/server.js\"",
+    "build": "npm run build --workspaces"
   },
   "repository": {
     "type": "git",
@@ -33,5 +34,14 @@
     "morgan": "^1.10.0",
     "pluralize": "^8.0.0",
     "winston": "^3.17.0"
+  },
+  "private": true,
+  "workspaces": [
+    "admin/backend",
+    "admin/frontend",
+    "src"
+  ],
+  "devDependencies": {
+    "concurrently": "^9.1.2"
   }
 }
