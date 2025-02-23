@@ -1,6 +1,6 @@
 import { StatusCodes } from "http-status-codes";
-import firebaseAdmin from "../configs/firebase.config.js";
 import { errorResponse } from "../utils/response.util.js";
+import jwt from "jsonwebtoken";
 
 const authCheck = () => {
     return async (req, res, next) => {
@@ -14,8 +14,8 @@ const authCheck = () => {
                 });
             }
         
-            const idToken = authHeader.split(" ")[1];
-            const decodedToken = await firebaseAdmin.auth().verifyIdToken(idToken);
+            const token = authHeader.split(" ")[1];
+            const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
         
             req.user = decodedToken;
             next();
