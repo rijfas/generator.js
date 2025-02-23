@@ -10,7 +10,7 @@ import errorHandler from "./middlewares/error-handler.middleware.js";
 import log from "./middlewares/log.middleware.js";
 import router from "./router.js";
 
-// connectDB(envConfig.mongoUri);
+connectDB(envConfig.mongoUri);
 
 const app = express();
 
