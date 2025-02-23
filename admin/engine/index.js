@@ -187,7 +187,10 @@ class GeneratorEngine {
           ...routes.map((route) => {
             const [, method, path] =
               route.match(/router\.(get|post|put|delete)\(['"](.*?)['"]/) || [];
-            return { method: method.toUpperCase(), path: `/${appName}${path}` };
+            return {
+              method: method.toUpperCase(),
+              path: `/api/${appName}${path}`,
+            };
           })
         );
       }
