@@ -9,6 +9,7 @@ import _404 from "./middlewares/404.middleware.js";
 import errorHandler from "./middlewares/error-handler.middleware.js";
 import log from "./middlewares/log.middleware.js";
 import router from "./router.js";
+import { connectDB } from "./utils/db.util.js";
 
 connectDB(envConfig.mongoUri);
 

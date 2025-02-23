@@ -113,6 +113,18 @@ class GeneratorEngine {
         await fs.writeFile(outputPath, rendered);
       }
 
+      // Write to src/router.js
+      const routerPath = path.join(this.projectRoot, "src", "router.js");
+      const routerContent = await fs.readFile(routerPath, "utf-8");
+      const importStatement = `import ${modelName.pascal}Router from './apps/${appName}/${schemaName}.router.js';\n`;
+      const useStatement = `router.use('/api/${appName}/${schemaName}', ${modelName.pascal}Router);\n`;
+
+      const updatedRouterContent = `${importStatement}${routerContent.replace(
+        "export default router;",
+        ""
+      )}\n${useStatement}\nexport default router;`;
+      await fs.writeFile(routerPath, updatedRouterContent);
+
       return true;
     } catch (error) {
       throw new Error(`Failed to add schema for ${appName}: ${error.message}`);
