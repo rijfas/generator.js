@@ -22,9 +22,8 @@ import {
 } from "./controllers/collection.controller.js";
 
 class AdminApi {
-  constructor(app, mongoose) {
+  constructor(app) {
     this.app = app;
-    this.mongoose = mongoose;
   }
   register() {
     console.log("Admin API registered");
@@ -68,12 +67,7 @@ class AdminApi {
       .route("/api/admin/apps/:id/endpoints/:endpoint_id/roles")
       .put(/* Update roles */);
 
-    this.app.use((req, res, next) => {
-      req.mongoose = this.mongoose;
-      next();
-    });
-
-    this.app.route("/api/admin/collections").get(getCollections);
+    this.app.route("/api/admin/apps/:app_name/collections").get(getCollections);
 
     this.app
       .route("/api/admin/collections/:collection_name")

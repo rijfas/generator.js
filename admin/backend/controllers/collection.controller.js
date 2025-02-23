@@ -1,11 +1,16 @@
+import pluralize from "pluralize";
+import { getSchemas } from "../utils/file-scanner.util.js";
+import mongoose from "mongoose";
 
 export const getCollections = async (req, res) => {
   try {
-    const {mongoose} = req;
     const collections = Object.keys(mongoose.models);
+        
+    const schemas = getSchemas(`${process.cwd()}/src/apps/${req.params.app_name}`)?.map(schema => pluralize(schema.name.toLocaleLowerCase()));
     
+    collections.filter((collection) => schemas.includes(collection));
     res.json({
-      collections
+      collections: collections.filter((collection) => schemas.includes(collection))
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -16,7 +21,6 @@ export const getCollections = async (req, res) => {
 export const getCollectionInfo = async (req, res) => {
   try {
     const { collection_name } = req.params;
-    const {mongoose} = req;
 
     const model = mongoose.model(collection_name);
     const schema = model.schema;
@@ -42,7 +46,6 @@ export const getCollectionInfo = async (req, res) => {
 export const createEntry = async (req, res) => {
   try {
     const { collection_name } = req.params;
-    const {mongoose} = req;
     const model = mongoose.model(collection_name);
     const newEntry = new model(req.body);
     const result = await newEntry.save();
@@ -55,7 +58,6 @@ export const createEntry = async (req, res) => {
 export const updateEntry = async (req, res) => {
   try {
     const { collection_name, entry_id } = req.params;
-    const {mongoose} = req;
     const model = mongoose.model(collection_name);
     const result = await model.findByIdAndUpdate(entry_id, req.body, { new: true });
     if (!result) {
@@ -70,7 +72,6 @@ export const updateEntry = async (req, res) => {
 export const deleteEntry = async (req, res) => {
   try {
     const { collection_name, entry_id } = req.params;
-    const {mongoose} = req;
     const model = mongoose.model(collection_name);
     const result = await model.findByIdAndDelete(entry_id);
     if (!result) {
