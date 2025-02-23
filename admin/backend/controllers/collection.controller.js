@@ -1,14 +1,18 @@
-import pluralize from "pluralize";
-import { getSchemas } from "../utils/file-scanner.util.js";
 import mongoose from "mongoose";
+import pluralize from "pluralize";
+import GeneratorEngine from "../../engine/index.js";
 import errorWrapper from "../middlewares/error-wrapper.middleware.js";
+
+const engine = GeneratorEngine.getInstance();
 
 export const getCollections = errorWrapper(async (req, res, next) => {
   const collections = Object.keys(mongoose.models);
 
-  const schemas = getSchemas(
-    `${process.cwd()}/src/apps/${req.params.app_name}`
-  )?.map((schema) => pluralize(schema.name.toLocaleLowerCase()));
+  const schemas = await engine
+    .getSchemas(req.params.app_name)
+    .then((schemas) =>
+      schemas.map((schema) => pluralize(schema.name.toLocaleLowerCase()))
+    );
 
   collections.filter((collection) => schemas.includes(collection));
   res.json({

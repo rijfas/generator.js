@@ -17,8 +17,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useCreateSchema } from "@/services/schemas/create-schema";
+import { useQueryClient } from "@tanstack/react-query";
 import { Plus, Trash2 } from "lucide-react";
 import { useFieldArray, useForm } from "react-hook-form";
+import { useParams } from "react-router";
 
 interface SchemaProperty {
   name: string;
@@ -29,6 +32,12 @@ interface SchemaProperty {
 interface CreateSchemaFormProps {
   onSuccess?: (schema: object) => void;
   onCancel?: () => void;
+}
+
+export interface Schema {
+  name: string;
+  // description?: string;
+  properties: SchemaProperty[];
 }
 
 export function CreateSchemaForm({
@@ -58,14 +67,15 @@ export function CreateSchemaForm({
     "date",
   ];
 
-  const onSubmit = (data: {
-    name: string;
-    description: string;
-    properties: SchemaProperty[];
-  }) => {
+  const params = useParams();
+  const appName = params.appName;
+  const queryClient = useQueryClient();
+  const { mutate } = useCreateSchema(appName!);
+
+  const onSubmit = (data: Schema) => {
     const schema = {
       name: data.name,
-      description: data.description,
+      // description: data.description,
       type: "object",
       properties: data.properties.reduce(
         (acc, prop) => ({
@@ -78,8 +88,12 @@ export function CreateSchemaForm({
         .filter((prop) => prop.required)
         .map((prop) => prop.name),
     };
-
-    if (onSuccess) onSuccess(schema);
+    mutate(data, {
+      onSuccess: async () => {
+        await queryClient.invalidateQueries({ queryKey: [appName, "schemas"] });
+        if (onSuccess) onSuccess(schema);
+      },
+    });
   };
 
   return (
@@ -100,19 +114,19 @@ export function CreateSchemaForm({
             )}
           />
 
-          <FormField
+          {/* <FormField
             control={form.control}
-            name='description'
+            name="description"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Description</FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder='Enter schema description' />
+                  <Input {...field} placeholder="Enter schema description" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
-          />
+          /> */}
         </div>
 
         <div className='relative'>

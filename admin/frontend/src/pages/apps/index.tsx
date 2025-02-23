@@ -1,10 +1,9 @@
-import { sampleApps } from "@/lib/sampleData";
-import { useState } from "react";
+import { useGetApps } from "@/services/apps/get-apps";
 import AppCard from "./components/app-card";
 import AppCreateDialog from "./components/app-create-dialog";
 
 export default function AppsPage() {
-  const [apps, setApps] = useState(sampleApps);
+  const { data } = useGetApps();
 
   return (
     <div className='p-8'>
@@ -12,10 +11,10 @@ export default function AppsPage() {
         <h1 className='text-2xl font-bold mb-6'>My Apps</h1>
       </div>
       <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
-        {apps.map((app) => (
-          <AppCard app={app} key={app.id} />
-        ))}
-        <AppCreateDialog apps={apps} setApps={setApps} />
+        {data &&
+          data.apps &&
+          data.apps.map((app: any) => <AppCard name={app} key={app} />)}
+        <AppCreateDialog />
       </div>
     </div>
   );
